@@ -1,0 +1,59 @@
+.header {
+  &__container {
+    padding-top: rem(20);
+    padding-bottom: rem(20);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: rem(40);
+  }
+  &__logo {
+  }
+  &__menu {
+  }
+  &__actions {
+  }
+  &__button {
+  }
+}
+.menu {
+  &__body {
+    
+  }
+  &__list {
+    display: flex;
+    gap: rem(40);
+  }
+  &__item {
+  }
+  &__link {
+    
+    position: relative;
+    transition: color 0.4s ease 0s;
+    &::after {
+      content: '';
+      opacity: 0;
+      visibility: hidden;
+      position: absolute;
+      bottom: rem(0);
+      left: rem(0);
+      height: rem(2);
+      width: 0;
+      background-color: $whiteColor;
+      transition: all 0.3s ease 0s;
+    }
+    @media (any-hover: hover){
+      &:hover{
+        color: $whiteColor;
+      }
+    }
+    &.active {
+      color: $whiteColor;
+      &::after {
+        opacity: 1;
+        visibility: visible;
+        width: 100%;
+      }
+    }
+  }
+}
