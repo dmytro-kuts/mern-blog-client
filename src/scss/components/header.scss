@@ -1,4 +1,6 @@
+
 .header {
+  // .header__container
   &__container {
     padding-top: rem(20);
     padding-bottom: rem(20);
@@ -7,27 +9,37 @@
     justify-content: space-between;
     gap: rem(40);
   }
+  // .header__logo
   &__logo {
+    padding: rem(4) rem(8) ;
+    border: 1px solid $mainColor;
+    border-radius: rem(8);
   }
+  // .header__menu
   &__menu {
   }
+  // .header__actions
   &__actions {
   }
+  // .header__button
   &__button {
+    
   }
 }
 .menu {
+  // .menu__body
   &__body {
-    
   }
+  // .menu__list
   &__list {
     display: flex;
     gap: rem(40);
   }
+  // .menu__item
   &__item {
   }
+  // .menu__link
   &__link {
-    
     position: relative;
     transition: color 0.4s ease 0s;
     &::after {

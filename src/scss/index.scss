@@ -114,7 +114,9 @@ body {
 	}
 }
 //========================================================================================================================================================
-@import "components/header";
-@import "components/footer";
 
-@import "pages/mainPage";
+@import "./global";
+@import "./components/header";
+@import "./components/footer";
+
+@import "./pages/mainPage";
