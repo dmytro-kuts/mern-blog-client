@@ -1,0 +1,78 @@
+.add-post {
+  @include adaptiveValue('margin-top', 100, 60);
+  // .add-post__container
+
+  &__container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}
+.form-add-post {
+  display: grid;
+  gap: rem(20);
+  @media (min-width: $mobileSmall) {
+    width: rem(400);
+  }
+  @media (max-width: $mobileSmall) {
+    width: 100%;
+  }
+  // .form-add-post__image
+  &__image {
+    img {
+      width: 100%;
+      max-height: rem(250);
+      border-radius: rem(8);
+      // object-fit: cover;
+    }
+  }
+  // .form-add-post__label
+  &__label {
+    font-size: rem(16);
+    display: grid;
+    gap: rem(8);
+  }
+  // .form-add-post__input
+  &__input {
+    color: $mainColor;
+    padding: rem(4) rem(8);
+    border-radius: rem(8);
+    background-color: rgba(198, 198, 198, 0.4);
+    border: 1px solid rgba(198, 198, 198, 0.4);
+    transition: all 0.3s ease 0s;
+    &:focus {
+      border: 1px solid $whiteColor;
+    }
+    // .form-add-post__input_text
+    &_text {
+    }
+  }
+  // .form-add-post__actions
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: rem(40);
+  }
+  // .form-add-post__button-add
+  &__button-add {
+    @media (any-hover: hover){
+      &:hover{
+        color: $whiteColor;
+        border: 1px solid rgba(34, 255, 0, 0.4);
+        background-color: rgba(34, 255, 0, 0.4);
+      }
+    }
+  }
+  // .form-add-post__button-out
+  &__button-out {
+    background-color: rgba(255, 0, 0, 0.4);
+    @media (any-hover: hover){
+      &:hover{
+        color: $whiteColor;
+        border: 1px solid rgba(255, 0, 0, 0.6);;
+        background-color: rgba(255, 0, 0, 0.6);
+      }
+    }
+  }
+}

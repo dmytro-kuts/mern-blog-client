@@ -1,0 +1,36 @@
+.page {
+  // .page__мain
+  &__мain {
+  }
+}
+.мain {
+  padding-top: rem(60);
+
+  // .мain__container
+  &__container {
+    display: flex;
+    @include adaptiveValue('gap',80, 20);
+  }
+  // .мain__post-items
+  &__post-items {
+    flex: 0 1 80%;
+    display: grid;
+    @include adaptiveValue('gap',40, 20);
+    @media (min-width: $mobile) {
+      grid-template-columns: repeat(auto-fit, minmax(rem(400), 1fr));
+
+    }
+  }
+  &__aside {
+    flex: 0 1 20%;
+  }
+}
+.aside-body {
+  // .aside-body__title
+
+  &__title {
+    font-size: rem(22);
+    color: $whiteColor;
+    text-transform: uppercase;
+  }
+}

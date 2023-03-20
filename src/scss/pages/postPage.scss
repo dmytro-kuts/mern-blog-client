@@ -1,0 +1,114 @@
+.post-page {
+  // .post-page__container
+
+  &__container {
+  }
+
+  // .post-page__button
+
+  &__button {
+    @include adaptiveValue('margin-bottom', 60, 20);
+  }
+
+  // .post-page__body
+
+  &__body {
+    display: grid;
+    column-gap: rem(60);
+    row-gap: rem(40);
+    @media (min-width: $mobile) {
+      grid-template-columns: 1fr 35%;
+      
+    }
+  }
+}
+.body-post {
+  // .body-post__item
+  &__item {
+    display: grid;
+    overflow: hidden;
+    border-radius: rem(8);
+    box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.2);
+  }
+  &__image {
+    position: relative;
+    padding-bottom: 64%;
+    overflow: hidden;
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+      will-change: transform;
+      transform-origin: center center;
+      transition: transform 0.8s ease 0s;
+    }
+    &.none {
+      padding-bottom: 0;
+    }
+  }
+  // .body-post__content
+  &__content {
+    padding: rem(16);
+  }
+  // .body-post__info
+  &__info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    &:not(:last-child) {
+      margin-bottom: rem(8);
+    }
+  }
+  // .body-post__name
+  &__name {
+  }
+  // .body-post__date
+  &__date {
+  }
+  // .body-post__title
+  &__title {
+    font-size: rem(24);
+    text-transform: uppercase;
+    color: $whiteColor;
+    &:not(:last-child) {
+      margin-bottom: rem(16);
+    }
+  }
+  // .body-post__text
+  &__text {
+    p {
+      padding-bottom: rem(1);
+      line-height: math.div(20, 18);
+    }
+    &:not(:last-child) {
+      margin-bottom: rem(8);
+    }
+  }
+  // .body-post__actions
+  &__actions {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: rem(40);
+  }
+  // .body-post__view
+  &__view {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: rem(8);
+  }
+  // .body-post__popular
+  &__popular {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: rem(8);
+  }
+  // .body-post__aside
+  &__aside {
+  }
+}

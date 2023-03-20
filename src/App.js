@@ -20,7 +20,7 @@ function App() {
 
   React.useEffect(() => {
     dispatch(getMe());
-  }, []);
+  }, [dispatch]);
   return (
     <Layout>
       <Routes>

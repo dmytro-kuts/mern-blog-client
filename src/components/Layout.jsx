@@ -1,6 +1,5 @@
 import React from 'react';
 import { Header } from './Header';
-import { Footer } from './Footer';
 
 export const Layout = ({ children }) => {
   return (
@@ -8,7 +7,6 @@ export const Layout = ({ children }) => {
       <div className="wrapper">
         <Header />
         <main className="page">{children}</main>
-        <Footer />
       </div>
     </React.Fragment>
   );
