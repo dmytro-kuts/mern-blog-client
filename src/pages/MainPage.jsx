@@ -15,9 +15,7 @@ export const MainPage = () => {
 
   if (!posts.length) {
     return (
-      <div className="мain__container">
-        <p>There are no posts yet . . .</p>
-      </div>
+      <div className="мain__container">Loading...</div>
     );
   }
 
@@ -30,8 +28,8 @@ export const MainPage = () => {
           ))}
         </div>
         <aside className="мain__aside aside-body">
-          <ul className="aside-body__title">
-            Popular:
+          <h3 className="aside-body__title">Popular:</h3>
+          <ul className="aside-body__items">
             {popularPosts?.map((post, index) => (
               <PopularPosts key={index} post={post} />
             ))}

@@ -59,11 +59,11 @@ export const AddPostPage = () => {
             <button
               onClick={handleSubmit}
               type="submit"
-              className="form-add-post__button-add button"
+              className="form-add-post__button button button_green"
             >
               Add post
             </button>
-            <Link to="/" className="form-add-post__button-out button">
+            <Link to="/" className="form-add-post__button button button_red">
               Out
             </Link>
           </div>

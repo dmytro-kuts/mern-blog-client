@@ -3,6 +3,9 @@
   &__list {
     color: $mainColor;
     font-size: rem(18);
+    &:not(:last-child) {
+      margin-bottom: rem(10);
+    }
   }
   // .aside-body__item
   &__item {

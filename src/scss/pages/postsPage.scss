@@ -1,0 +1,10 @@
+.posts {
+  // .posts__container
+  &__container {
+    display: grid;
+    gap: rem(40);
+    @media (min-width:$mobile){
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+}

@@ -5,7 +5,7 @@ import { Link } from 'react-router-dom';
 
 export const PostItem = ({ post }) => {
   if (!post) {
-    return <div className="post-item__null">Loading</div>;
+    return <div className="post-item__null">Loading...</div>;
   }
   return (
     <article className="post-item__body">
