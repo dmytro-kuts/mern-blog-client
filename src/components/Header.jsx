@@ -12,7 +12,7 @@ export const Header = () => {
   const logoutHandler = () => {
     dispatch(logout());
     window.localStorage.removeItem('token');
-    toast('Ви вийшли з облікового запису');
+    toast('You are logged out');
   };
 
   return (

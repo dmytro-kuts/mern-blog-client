@@ -16,7 +16,7 @@ export const PostsPage = () => {
 
   React.useEffect(() => {
     fetchMyPosts();
-  }, []);
+  }, [fetchMyPosts]);
   return (
     <div className="page__posts posts">
       <div className="posts__container">

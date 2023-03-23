@@ -1,8 +1,7 @@
 import React from 'react';
 import Moment from 'react-moment';
 import { AiFillDelete, AiFillEye, AiOutlineMessage, AiTwotoneEdit } from 'react-icons/ai';
-import { useParams } from 'react-router-dom';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -72,7 +71,9 @@ export const PostPage = () => {
                 {user?._id === post.author && (
                   <div className="actions-post__row">
                     <button className="actions-post__edit">
-                      <AiTwotoneEdit />
+                      <Link to={`/${params.id}/edit`}>
+                        <AiTwotoneEdit />
+                      </Link>
                     </button>
                     <button onClick={deletePostHandler} className="actions-post__delete">
                       <AiFillDelete />

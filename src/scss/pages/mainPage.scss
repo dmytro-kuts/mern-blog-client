@@ -10,6 +10,7 @@
   &__container {
     display: flex;
     @include adaptiveValue('gap',80, 20);
+    padding-bottom: rem(20);
   }
   // .мain__post-items
   &__post-items {
