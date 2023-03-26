@@ -15,12 +15,14 @@
 
   &__body {
     display: grid;
+    align-items: start;
     column-gap: rem(60);
     row-gap: rem(40);
-    @media (min-width: $mobile) {
-      grid-template-columns: 1fr 35%;
+    @media (min-width: $tablet) {
+      grid-template-columns: 1fr 40%;
       
     }
+
   }
 }
 .body-post {
@@ -95,22 +97,8 @@
     justify-items: center;
     gap: rem(40);
   }
-  // .body-post__view
-  &__view {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    gap: rem(8);
-  }
-  // .body-post__popular
-  &__popular {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    gap: rem(8);
-  }
-
   // .body-post__aside
   &__aside {
+    
   }
 }

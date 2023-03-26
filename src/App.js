@@ -33,7 +33,7 @@ function App() {
         <Route path=":id/edit" element={<EditPostPage />} />
       </Routes>
 
-      <ToastContainer position='bottom-right' />
+      <ToastContainer position='bottom-right' theme="dark" autoClose={1500} />
     </Layout>
   );
 }

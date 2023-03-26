@@ -5,6 +5,12 @@
     overflow: hidden;
     border-radius: rem(8);
     box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.2);
+    transition: box-shadow 0.3s ease 0s;
+    @media (any-hover: hover){
+      &:hover{
+        box-shadow: 0px 4px 8px 6px rgba(0, 0, 0, 0.3);
+      }
+    }
   }
   // .post-item__image
   &__image {
@@ -91,6 +97,13 @@
   }
   // .post-item__view
   &__view {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: rem(8);
+  }
+  // .post-item__comment
+  &__comments {
     display: flex;
     align-items: center;
     justify-items: center;

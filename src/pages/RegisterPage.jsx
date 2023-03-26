@@ -36,6 +36,9 @@ export const RegisterPage = () => {
   return (
     <div className="page__login-page form-page">
       <div className="form-page__container">
+        <Link to={'/'} className="post-page__button button">
+          Back
+        </Link>
         <form className="form-page__form" onSubmit={(e) => e.preventDefault()}>
           <h1 className="form-page__title">Register</h1>
           <label className="form-page__lable">

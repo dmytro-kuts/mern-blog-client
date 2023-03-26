@@ -1,21 +1,27 @@
 import React from 'react';
 import Moment from 'react-moment';
-import { AiFillDelete, AiFillEye, AiOutlineMessage, AiTwotoneEdit } from 'react-icons/ai';
+import { AiFillDelete, AiFillEye, AiOutlineMessage, AiTwotoneEdit, AiOutlineLike} from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import axios from '../utils/axios';
 import { deletePost } from '../redux/slices/post/postSlice';
+import { checkIsAuth } from '../redux/slices/auth/authSlice';
+import { createComment, getPostComments } from '../redux/slices/comment/commentSlice';
+import { CommentItem } from '../components/CommentItem';
 
 export const PostPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const isAuth = useSelector(checkIsAuth);
 
   const { user } = useSelector((state) => state.auth);
+  const { comments } = useSelector((state) => state.comment);
+  const params = useParams();
 
   const [post, setPost] = React.useState([]);
-  const params = useParams();
+  const [comment, setComment] = React.useState('');
 
   const deletePostHandler = () => {
     try {
@@ -27,6 +33,26 @@ export const PostPage = () => {
     }
   };
 
+  const handleSubmit = () => {
+    try {
+      const postId = params.id;
+      const userName = user.userName;
+      dispatch(createComment({ postId, comment, userName }));
+      toast('Added a new comment');
+      setComment('');
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const fetchComments = React.useCallback(async () => {
+    try {
+      dispatch(getPostComments(params.id));
+    } catch (error) {
+      console.log(error);
+    }
+  }, [params.id, dispatch]);
+
   const fetchPost = React.useCallback(async () => {
     const { data } = await axios.get(`/posts/${params.id}`);
     setPost(data);
@@ -35,6 +61,10 @@ export const PostPage = () => {
   React.useEffect(() => {
     fetchPost();
   }, [fetchPost]);
+
+  React.useEffect(() => {
+    fetchComments();
+  }, [fetchComments]);
 
   return (
     <section className="page__post post-page">
@@ -61,11 +91,14 @@ export const PostPage = () => {
               </div>
               <div className="body-post__actions actions-post ">
                 <div className="actions-post__row">
-                  <button className="actions-post__view">
+                  <div className="actions-post__view">
                     <AiFillEye /> <span>{post.views}</span>
-                  </button>
-                  <button className="actions-post__popular">
+                  </div>
+                  <div className="actions-post__comments">
                     <AiOutlineMessage /> <span>{post.comments?.length || 0}</span>
+                  </div>
+                  <button className="actions-post__popular">
+                    <AiOutlineLike /> <span>{post.comments?.length || 0}</span>
                   </button>
                 </div>
                 {user?._id === post.author && (
@@ -85,8 +118,26 @@ export const PostPage = () => {
           </div>
 
           <aside className="body-post__aside aside-body">
-            <h3 className="aside-body__title">Comments</h3>
-            <ul className="aside-body__items"></ul>
+            <h3 className="aside-body__title">Comments:</h3>
+
+            {isAuth && (
+              <form className="aside-body__form" onSubmit={(e) => e.preventDefault()}>
+                <input
+                  type="text"
+                  value={comment}
+                  onChange={(e) => setComment(e.target.value)}
+                  placeholder="New comment"
+                />
+                <button onClick={handleSubmit} className="aside-body__button button" type="submit">
+                  Send
+                </button>
+              </form>
+            )}
+            <ul className="aside-body__comments comments">
+              {comments?.map((cmt) => (
+                <CommentItem key={cmt?._id} cmt={cmt} />
+              ))}
+            </ul>
           </aside>
         </div>
       </div>

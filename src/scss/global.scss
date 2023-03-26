@@ -38,7 +38,7 @@
 }
 //========================================================================================================================================================
 .form-page {
-  @include adaptiveValue('margin-top', 100, 60);
+  margin-top: rem(20);
   // .form-page__container
   &__container {
   }
@@ -92,20 +92,27 @@
     justify-items: center;
     gap: rem(30);
   }
-  // .actions-post__view
-  &__view {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    gap: rem(8);
-  }
-  // .actions-post__popular
-  &__popular {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    gap: rem(8);
-  }
+ // .actions-post__view
+ &__view {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: rem(8);
+}
+// .actions-post__comments
+&__comments {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: rem(8);
+}
+// .actions-post__popular
+&__popular {
+  display: flex;
+  align-items: center;
+  justify-items: center;
+  gap: rem(8);
+}
   // .actions-post__edit
   &__edit {
     transition: all 0.3s ease 0s;

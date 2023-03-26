@@ -1,6 +1,6 @@
 import React from 'react';
 import Moment from 'react-moment';
-import { AiFillEye, AiOutlineMessage } from 'react-icons/ai';
+import { AiFillEye, AiOutlineMessage, AiOutlineLike } from 'react-icons/ai';
 import { Link } from 'react-router-dom';
 
 export const PostItem = ({ post }) => {
@@ -25,11 +25,14 @@ export const PostItem = ({ post }) => {
             <p>{post.text}</p>
           </div>
           <div className="post-item__actions">
-            <button className="post-item__view">
+            <div className="post-item__view">
               <AiFillEye /> <span>{post.views}</span>
-            </button>
-            <button className="post-item__popular">
+            </div>
+            <div className="post-item__comments">
               <AiOutlineMessage /> <span>{post.comments?.length || 0}</span>
+            </div>
+            <button className="post-item__popular">
+              <AiOutlineLike /> <span>{post.comments?.length || 0}</span>
             </button>
           </div>
         </div>

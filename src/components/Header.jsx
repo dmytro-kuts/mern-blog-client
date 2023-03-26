@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -7,18 +7,27 @@ import { checkIsAuth, logout } from '../redux/slices/auth/authSlice';
 
 export const Header = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const isAuth = useSelector(checkIsAuth);
+
+  const { user } = useSelector((state) => state.auth);
 
   const logoutHandler = () => {
     dispatch(logout());
     window.localStorage.removeItem('token');
     toast('You are logged out');
+    navigate('/');
   };
 
   return (
     <header>
       <div className="header__container">
-        <span className="header__logo">D</span>
+        <div className="header__logo">
+          <div className="header__avatar">
+            <img src="assets/noavatar.png" alt="Avatar" />
+          </div>
+          <h3>{user?.userName}</h3>
+        </div>
 
         {isAuth && (
           <div className="header__menu menu">
@@ -26,7 +35,7 @@ export const Header = () => {
               <ul className="menu__list">
                 <li className="menu__item">
                   <NavLink to="/" className="menu__link">
-                    Home
+                    All posts
                   </NavLink>
                 </li>
                 <li className="menu__item">

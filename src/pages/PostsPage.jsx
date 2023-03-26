@@ -3,8 +3,8 @@ import axios from '../utils/axios';
 import { PostItem } from '../components/PostItem';
 
 export const PostsPage = () => {
+  
   const [posts, setPosts] = React.useState([]);
-
   const fetchMyPosts = async () => {
     try {
       const { data } = await axios.get(`/posts/all/me`);
@@ -16,12 +16,12 @@ export const PostsPage = () => {
 
   React.useEffect(() => {
     fetchMyPosts();
-  }, [fetchMyPosts]);
+  }, []);
   return (
     <div className="page__posts posts">
       <div className="posts__container">
-        {posts?.map((post, index) => (
-          <PostItem key={index} post={post} />
+        {posts?.map((post) => (
+          <PostItem key={post._id} post={post} />
         ))}
       </div>
     </div>

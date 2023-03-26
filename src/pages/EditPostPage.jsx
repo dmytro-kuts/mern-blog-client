@@ -29,6 +29,8 @@ export const EditPostPage = () => {
     }
   };
 
+
+
   const fetchPost = React.useCallback(async () => {
     const { data } = await axios.get(`/posts/${params.id}`);
     setTitle(data.title);

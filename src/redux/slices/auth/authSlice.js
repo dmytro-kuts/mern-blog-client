@@ -9,6 +9,7 @@ const initialState = {
   status: null,
 };
 
+
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
   async ({ userName, password }) => {
@@ -47,13 +48,9 @@ export const loginUser = createAsyncThunk('auth/loginUser', async ({ userName, p
 });
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
-  try {
     const { data } = await axios.get('/auth/me');
 
     return data;
-  } catch (error) {
-    console.log(error);
-  }
 });
 
 export const authSlice = createSlice({
@@ -80,8 +77,8 @@ export const authSlice = createSlice({
       state.token = action.payload.token;
     });
     builder.addCase(registerUser.rejected, (state, action) => {
-      state.status = action.payload.message;
       state.isLoading = false;
+      state.status = action.payload.message;
     });
     // loginUser
     builder.addCase(loginUser.pending, (state) => {
@@ -95,8 +92,8 @@ export const authSlice = createSlice({
       state.token = action.payload.token;
     });
     builder.addCase(loginUser.rejected, (state, action) => {
-      state.status = action.payload.message;
       state.isLoading = false;
+      state.status = action.payload.message;
     });
     // getMe
     builder.addCase(getMe.pending, (state) => {
@@ -105,13 +102,13 @@ export const authSlice = createSlice({
     });
     builder.addCase(getMe.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.status = null;
       state.user = action.payload?.user;
       state.token = action.payload?.token;
+      state.status = null;
     });
     builder.addCase(getMe.rejected, (state, action) => {
-      state.status = action.payload.message;
       state.isLoading = false;
+      state.status = null;
     });
   },
 });
