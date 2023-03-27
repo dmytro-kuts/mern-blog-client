@@ -9,15 +9,11 @@ const initialState = {
   status: null,
 };
 
-
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async ({ userName, password }) => {
+  async (params) => {
     try {
-      const { data } = await axios.post('/auth/register', {
-        userName,
-        password,
-      });
+      const { data } = await axios.post('/auth/register', params);
 
       if (data.token) {
         window.localStorage.setItem('token', data.token);
@@ -30,10 +26,10 @@ export const registerUser = createAsyncThunk(
   },
 );
 
-export const loginUser = createAsyncThunk('auth/loginUser', async ({ userName, password }) => {
+export const loginUser = createAsyncThunk('auth/loginUser', async ({ email, password }) => {
   try {
     const { data } = await axios.post('/auth/login', {
-      userName,
+      email,
       password,
     });
 
@@ -48,9 +44,9 @@ export const loginUser = createAsyncThunk('auth/loginUser', async ({ userName, p
 });
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
-    const { data } = await axios.get('/auth/me');
+  const { data } = await axios.get('/auth/me');
 
-    return data;
+  return data;
 });
 
 export const authSlice = createSlice({

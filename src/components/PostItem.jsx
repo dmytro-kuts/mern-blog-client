@@ -32,7 +32,7 @@ export const PostItem = ({ post }) => {
               <AiOutlineMessage /> <span>{post.comments?.length || 0}</span>
             </div>
             <button className="post-item__popular">
-              <AiOutlineLike /> <span>{post.comments?.length || 0}</span>
+              <AiOutlineLike /> <span>{post.like?.length || 0}</span>
             </button>
           </div>
         </div>

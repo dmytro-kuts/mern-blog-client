@@ -38,28 +38,86 @@
 }
 //========================================================================================================================================================
 .form-page {
-  margin-top: rem(20);
-  // .form-page__container
-  &__container {
-  }
   // .form-page__form
+
   &__form {
+    position: relative;
     display: grid;
     justify-content: space-around;
     gap: rem(20);
   }
+
   // .form-page__title
+
   &__title {
-    @include adaptiveValue('font-size', 24, 20);
+    text-align: center;
+    text-transform: uppercase;
+    @include adaptiveValue('font-size', 28, 20);
   }
+
+  // .form-page__item
+
+  &__item {
+    position: relative;
+    width: rem(310);
+    display: flex;
+    flex-direction: column;
+    &:nth-of-type(1) {
+      align-items: center;
+    }
+    button {
+      font-size: rem(14);
+      position: absolute;
+      width: rem(50);
+      height: rem(38);
+      bottom: 0;
+      right: rem(8);
+    }
+  }
+
+  // .form-page__image
+
+  &__image {
+    position: relative;
+    width: rem(100);
+    height: rem(100);
+    img {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      object-fit: cover;
+    }
+  }
+  // .form-page__add-img
+  &__add-img {
+    cursor: pointer;
+    position: absolute;
+    width: rem(100);
+    height: rem(100);
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+  }
+
   // .form-page__lable
+
   &__lable {
     font-size: rem(16);
-    display: grid;
+    display: flex;
     gap: rem(8);
+    margin-bottom: rem(10);
+    span {
+      color: rgb(195, 29, 29);
+      font-size: rem(14);
+    }
   }
+
   // .form-page__input
   &__input {
+    position: relative;
+    width: 100%;
     color: $mainColor;
     padding: rem(4) rem(8);
     border-radius: rem(8);
@@ -69,14 +127,27 @@
     &:focus {
       border: 1px solid $whiteColor;
     }
+    &._error {
+      background-color: rgba(255, 0, 0, 0.05);
+      border: 1px solid rgb(255, 0, 0);
+    }
+
   }
+  // .form-page__error
+
+  &__error {
+  }
+
   // .form-page__actions
+
   &__actions {
     display: flex;
     justify-content: space-between;
     gap: rem(20);
   }
+
   // .form-page__button
+
   &__button {
   }
 }
@@ -92,44 +163,44 @@
     justify-items: center;
     gap: rem(30);
   }
- // .actions-post__view
- &__view {
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  gap: rem(8);
-}
-// .actions-post__comments
-&__comments {
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  gap: rem(8);
-}
-// .actions-post__popular
-&__popular {
-  display: flex;
-  align-items: center;
-  justify-items: center;
-  gap: rem(8);
-}
+  // .actions-post__view
+  &__view {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: rem(8);
+  }
+  // .actions-post__comments
+  &__comments {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: rem(8);
+  }
+  // .actions-post__popular
+  &__popular {
+    display: flex;
+    align-items: center;
+    justify-items: center;
+    gap: rem(8);
+  }
   // .actions-post__edit
   &__edit {
     transition: all 0.3s ease 0s;
-    @media (any-hover: hover){
-      &:hover{
+    @media (any-hover: hover) {
+      &:hover {
         color: rgba(34, 255, 0, 0.4);
-        transform: translate(0px,-2px);
+        transform: translate(0px, -2px);
       }
     }
   }
   // .actions-post__delete
   &__delete {
     transition: all 0.3s ease 0s;
-    @media (any-hover: hover){
-      &:hover{
+    @media (any-hover: hover) {
+      &:hover {
         color: rgba(255, 0, 0, 0.6);
-        transform: translate(0px,-2px);
+        transform: translate(0px, -2px);
       }
     }
   }

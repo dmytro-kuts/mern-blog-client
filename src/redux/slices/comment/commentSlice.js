@@ -11,7 +11,6 @@ const initialState = {
 export const createComment = createAsyncThunk(
   'comment/createComment',
   async ({ postId, comment, userName }) => {
-    console.log( postId, comment, userName);
     try {
       const { data } = await axios.post(`/comments/${postId}`, { postId, comment, userName });
 

@@ -3,6 +3,7 @@ import Moment from 'react-moment';
 
 export const CommentItem = ({ cmt }) => {
   const userName = cmt.userName;
+  console.log(cmt);
   return (
     <li className="comments__item">
       <div className="comments__author">

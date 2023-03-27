@@ -11,8 +11,68 @@ export const RegisterPage = () => {
 
   const { status } = useSelector((state) => state.auth);
   const isAuth = useSelector(checkIsAuth);
+
+  const [image, setImage] = React.useState('');
   const [userName, setUserName] = React.useState('');
+  const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
+  const [userNameError, setUserNameError] = React.useState('');
+  const [emailError, setEmailError] = React.useState('');
+  const [passwordError, setPasswordError] = React.useState('');
+  const [showPassword, setShowPassword] = React.useState(false);
+
+
+  const handleNameChange = (e) => {
+    setUserName(e.target.value);
+    if (!/^[a-zA-Z]{3,10}$/.test(e.target.value)) {
+      setUserNameError('Please enter a valid name');
+    } else {
+      setUserNameError('');
+    }
+  };
+
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    if (!/\S+@\S+\.\S+/.test(e.target.value)) {
+      setEmailError('Please enter a valid email');
+    } else {
+      setEmailError('');
+    }
+  };
+
+  const handlePasswordChange = (e) => {
+    setPassword(e.target.value);
+    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(e.target.value)) {
+      setPasswordError('Please enter a strong password');
+    } else {
+      setPasswordError('');
+    }
+  };
+
+  const toggleShowPassword = () => {
+    setShowPassword(!showPassword);
+  };
+
+  const fieldsValidation = (e) => {
+    e.preventDefault();
+    if (!userNameError && !emailError && !passwordError) {
+      handleSubmit();
+    }
+  };
+
+  const handleSubmit = () => {
+    try {
+      const data = new FormData();
+      data.append('userName', userName);
+      data.append('email', email);
+      data.append('password', password);
+      data.append('image', image);
+      dispatch(registerUser(data));
+      // dispatch(registerUser({ userName, password, email, image }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   React.useEffect(() => {
     if (status) {
@@ -23,45 +83,75 @@ export const RegisterPage = () => {
     }
   }, [status, isAuth, navigate]);
 
-  const handleSubmit = () => {
-    try {
-      dispatch(registerUser({ userName, password }));
-      setUserName('');
-      setPassword('');
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="page__login-page form-page">
       <div className="form-page__container">
         <Link to={'/'} className="post-page__button button">
           Back
         </Link>
-        <form className="form-page__form" onSubmit={(e) => e.preventDefault()}>
+        <form className="form-page__form" onSubmit={fieldsValidation}>
           <h1 className="form-page__title">Register</h1>
-          <label className="form-page__lable">
-            Name:
+
+          <div className="form-page__item">
+            <div className="form-page__image">
+              <img
+                src={image ? URL.createObjectURL(image) : 'assets/noavatar.png'}
+                alt="ImagePost"
+              />
+              <label className="form-page__add-img ">
+                <input onChange={(e) => setImage(e.target.files[0])} type="file" hidden />
+              </label>
+            </div>
+          </div>
+
+          <div className="form-page__item">
+            <label htmlFor="name" className="form-page__lable">
+              Name:
+              {userNameError && <span className="form-page__error">{userNameError}</span>}
+            </label>
             <input
+              id="name"
               type="text"
               value={userName}
-              onChange={(e) => setUserName(e.target.value)}
+              onChange={handleNameChange}
               placeholder="Name"
-              className={status && status.error ? 'form-page__input _error' : 'form-page__input'}
+              className={userNameError ? 'form-page__input _error' : 'form-page__input'}
             />
-            {status && status.error && <div className="form-page__error">{status.error}</div>}
-          </label>
-          <label className="form-page__lable">
-            Password:
+          </div>
+
+          <div className="form-page__item">
+            <label htmlFor="email" className="form-page__lable">
+              Email:
+              {emailError && <span className="form-page__error">{emailError}</span>}
+            </label>
             <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder=" Password"
-              className="form-page__input"
+              type="email"
+              id="email"
+              value={email}
+              placeholder="Email"
+              onChange={handleEmailChange}
+              className={emailError ? 'form-page__input _error' : 'form-page__input'}
             />
-          </label>
+          </div>
+
+          <div className="form-page__item">
+            <label htmlFor="password" className="form-page__lable">
+              Password:
+              {passwordError && <span className="form-page__error">{passwordError}</span>}
+            </label>
+            <input
+              type={showPassword ? 'text' : 'password'}
+              id="password"
+              placeholder="Password"
+              value={password}
+              onChange={handlePasswordChange}
+              className={passwordError ? 'form-page__input _error' : 'form-page__input'}
+            />
+            <button type="button" onClick={toggleShowPassword}>
+              {showPassword ? 'Hide' : 'Show'}
+            </button>
+          </div>
+
           <div className="form-page__actions">
             <button type="submit" onClick={handleSubmit} className="form-page__button button">
               Register

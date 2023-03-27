@@ -24,7 +24,17 @@ export const Header = () => {
       <div className="header__container">
         <div className="header__logo">
           <div className="header__avatar">
-            <img src="assets/noavatar.png" alt="Avatar" />
+            {user?.avatarUrl ? (
+              <img
+                src={`http://localhost:4444/${user.avatarUrl}`}
+                alt="ImagePost"
+              />
+            ) : (
+              <img
+                src='assets/noavatar.png'
+                alt="ImagePost"
+              />
+            )}
           </div>
           <h3>{user?.userName}</h3>
         </div>

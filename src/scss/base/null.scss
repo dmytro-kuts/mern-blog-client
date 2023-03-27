@@ -63,3 +63,10 @@ h6 {
 	font-weight: inherit;
 	font-size: inherit;
 }
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active  {
+    box-shadow: 0 0 0 30px rgb(162, 161, 161) inset !important;
+		-webkit-text-fill-color: rgb(234, 234, 234) !important;
+}
