@@ -3,7 +3,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: rem(4) rem(8);
+  padding: rem(2) rem(6);
   border: 1px solid $mainColor;
   border-radius: rem(8);
   transition: all 0.3s ease 0s;
@@ -38,6 +38,8 @@
 }
 //========================================================================================================================================================
 .form-page {
+  @include adaptiveValue('margin-top', 100, 80);
+  @include adaptiveValue('margin-bottom', 60, 30);
   // .form-page__form
 
   &__form {
@@ -81,13 +83,42 @@
     position: relative;
     width: rem(100);
     height: rem(100);
+    
     img {
+      transition: all 0.3s ease 0s;
+      overflow: hidden;
+      border-radius: 50%;
       position: absolute;
       width: 100%;
       height: 100%;
       top: 0;
       left: 0;
       object-fit: cover;
+    }
+    &::before {
+      transition: all 0.3s ease 0s;
+      display: flex;
+      align-items: center;
+      text-align: center;
+      position: absolute;
+      content: 'Add Avatar';
+      width: 100%;
+      height: 100%;
+      top: rem(0);
+      left: rem(0);
+      z-index: 1;
+      color: rgb(117, 117, 117);
+    }
+    @media (any-hover: hover){
+      &:hover{
+        img{
+          border-radius: 50%;
+          box-shadow: rem(0) rem(0) rem(10) rgba(255, 255, 255, 0.8);
+        }
+        &::before{
+          color: rgb(77, 77, 77);
+        }
+      }
     }
   }
   // .form-page__add-img
@@ -99,6 +130,7 @@
     top: 0;
     left: 0;
     border-radius: 50%;
+    z-index: 2;
   }
 
   // .form-page__lable
@@ -131,7 +163,6 @@
       background-color: rgba(255, 0, 0, 0.05);
       border: 1px solid rgb(255, 0, 0);
     }
-
   }
   // .form-page__error
 
@@ -155,13 +186,13 @@
 .actions-post {
   display: flex;
   justify-content: space-between;
-  gap: rem(20);
+  @include adaptiveValue("gap", 40, 20);
   // .actions-post__row
   &__row {
     display: flex;
     align-items: center;
     justify-items: center;
-    gap: rem(30);
+    @include adaptiveValue("gap", 30, 20);
   }
   // .actions-post__view
   &__view {

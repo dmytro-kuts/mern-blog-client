@@ -3,6 +3,8 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
+import Filter from 'bad-words';
+
 import { checkIsAuth, registerUser } from '../redux/slices/auth/authSlice';
 
 export const RegisterPage = () => {
@@ -21,10 +23,15 @@ export const RegisterPage = () => {
   const [passwordError, setPasswordError] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
 
-
   const handleNameChange = (e) => {
-    setUserName(e.target.value);
-    if (!/^[a-zA-Z]{3,10}$/.test(e.target.value)) {
+    const name = e.target.value;
+    const filter = new Filter();
+    setUserName(name);
+    if (name === '') {
+      setUserNameError('Please enter a name');
+    } else if (!/^[a-zA-Z]+\s?[a-zA-Z]+$/.test(name)) {
+      setUserNameError('Please enter a valid name');
+    } else if (filter.isProfane(name)) {
       setUserNameError('Please enter a valid name');
     } else {
       setUserNameError('');
@@ -42,7 +49,7 @@ export const RegisterPage = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(e.target.value)) {
+    if (!/(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{6,}/.test(e.target.value)) {
       setPasswordError('Please enter a strong password');
     } else {
       setPasswordError('');
@@ -57,6 +64,16 @@ export const RegisterPage = () => {
     e.preventDefault();
     if (!userNameError && !emailError && !passwordError) {
       handleSubmit();
+    } else {
+      if (!userName) {
+        setUserNameError('Please enter a name');
+      }
+      if (!email) {
+        setEmailError('Please enter an email');
+      }
+      if (!password) {
+        setPasswordError('Please enter a password');
+      }
     }
   };
 
@@ -68,7 +85,6 @@ export const RegisterPage = () => {
       data.append('password', password);
       data.append('image', image);
       dispatch(registerUser(data));
-      // dispatch(registerUser({ userName, password, email, image }));
     } catch (error) {
       console.log(error);
     }
@@ -86,9 +102,6 @@ export const RegisterPage = () => {
   return (
     <div className="page__login-page form-page">
       <div className="form-page__container">
-        <Link to={'/'} className="post-page__button button">
-          Back
-        </Link>
         <form className="form-page__form" onSubmit={fieldsValidation}>
           <h1 className="form-page__title">Register</h1>
 

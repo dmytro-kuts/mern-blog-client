@@ -1,28 +1,40 @@
 .post-page {
+  @include adaptiveValue('margin-top', 100, 80);
+  @include adaptiveValue('margin-bottom', 60, 30);
   // .post-page__container
-
   &__container {
-    padding-bottom: rem(20);
+    @media (max-width: $mobileSmall) {
+      .body-post__item {
+        border-radius: 0;
+        margin-left: rem(-15);
+        margin-right: rem(-15);
+      }
+      .aside-body__comments {
+        margin-left: rem(-15);
+        margin-right: rem(-15);
+      }
+      .comments__item {
+        border-radius: 0;
+      }
+    }
   }
-
   // .post-page__button
-
   &__button {
     @include adaptiveValue('margin-bottom', 60, 20);
   }
-
   // .post-page__body
-
   &__body {
     display: grid;
     align-items: start;
-    column-gap: rem(60);
+
     row-gap: rem(40);
     @media (min-width: $tablet) {
-      grid-template-columns: 1fr 40%;
-      
+      grid-template-columns: 1fr 36%;
+      column-gap: rem(60);
     }
-
+    @media (max-width: $tablet) {
+      width: 100%;
+    }
   }
 }
 .body-post {
@@ -54,6 +66,7 @@
   }
   // .body-post__content
   &__content {
+
     padding: rem(16);
   }
   // .body-post__info
@@ -61,19 +74,32 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: rem(8);
     &:not(:last-child) {
-      margin-bottom: rem(8);
+      margin-bottom: rem(30);
     }
   }
-  // .body-post__name
-  &__name {
+  // .body-post__author
+  &__author {
+    display: flex;
+    align-items: center;
+    gap: rem(8);
+    img {
+      @include adaptiveValue('width', 30, 20);
+      @include adaptiveValue('height', 30, 20);
+    }
+    h3 {
+    }
   }
   // .body-post__date
   &__date {
+    @include adaptiveValue('font-size', 18, 16);
   }
   // .body-post__title
   &__title {
-    font-size: rem(24);
+    flex: 1 1 auto;
+    @include adaptiveValue('font-size', 24, 20);
+    line-height: math.div(26, 24);
     text-transform: uppercase;
     color: $whiteColor;
     &:not(:last-child) {
@@ -82,23 +108,22 @@
   }
   // .body-post__text
   &__text {
+    text-align: justify;
     p {
       padding-bottom: rem(1);
-      line-height: math.div(20, 18);
+      line-height: math.div(24, 18);
+      &:not(:last-child) {
+        margin-bottom: rem(16);
+      }
     }
     &:not(:last-child) {
-      margin-bottom: rem(8);
+      margin-bottom: rem(12);
     }
   }
   // .body-post__actions
   &__actions {
-    display: flex;
-    align-items: center;
-    justify-items: center;
-    gap: rem(40);
   }
   // .body-post__aside
   &__aside {
-    
   }
 }

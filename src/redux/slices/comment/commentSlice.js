@@ -10,9 +10,14 @@ const initialState = {
 
 export const createComment = createAsyncThunk(
   'comment/createComment',
-  async ({ postId, comment, userName }) => {
+  async ({ postId, comment, userName, userAvatar }) => {
     try {
-      const { data } = await axios.post(`/comments/${postId}`, { postId, comment, userName });
+      const { data } = await axios.post(`/comments/${postId}`, {
+        postId,
+        comment,
+        userName,
+        userAvatar,
+      });
 
       return data;
     } catch (error) {
@@ -21,18 +26,15 @@ export const createComment = createAsyncThunk(
   },
 );
 
-export const getPostComments = createAsyncThunk(
-  'comment/getPostComments',
-  async (postId) => {
-    try {
-      const { data } = await axios.get(`/posts/comments/${postId}`);
+export const getPostComments = createAsyncThunk('comment/getPostComments', async (postId) => {
+  try {
+    const { data } = await axios.get(`/posts/comments/${postId}`);
 
-      return data;
-    } catch (error) {
-      console.log(error);
-    }
-  },
-);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 
 export const commentSlice = createSlice({
   name: 'comment',

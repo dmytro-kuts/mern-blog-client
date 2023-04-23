@@ -1,10 +1,21 @@
 .posts {
+  @include adaptiveValue('margin-top', 100, 80);
+  @include adaptiveValue('margin-bottom', 60, 30);
   // .posts__container
   &__container {
     display: grid;
-    gap: rem(40);
+    @include adaptiveValue("column-gap", 40, 20);
+    row-gap: rem(30);
     @media (min-width:$mobile){
       grid-template-columns: 1fr 1fr;
+    }
+    @media (max-width:$mobileSmall){
+      .post-item__body{
+        border-radius: 0;
+        margin-left: rem(-15);
+        margin-right: rem(-15);
+      }
+
     }
   }
 }

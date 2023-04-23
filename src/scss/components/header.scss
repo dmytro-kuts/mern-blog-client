@@ -1,19 +1,31 @@
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 100;
+  background: -webkit-linear-gradient(to right, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
+  background: linear-gradient(to right, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
   // .header__container
   &__container {
-    padding-top: rem(20);
-    padding-bottom: rem(20);
+    @include adaptiveValue('padding-top', 20, 10);
+    @include adaptiveValue('padding-bottom', 20, 10);
     display: flex;
     align-items: center;
     justify-content: space-between;
-
-    gap: rem(40);
+    @include adaptiveValue('gap', 40, 20);
   }
   // .header__logo
   &__logo {
     display: flex;
     align-items: center;
     gap: rem(10);
+    z-index: 101;
+    @media (max-width: em(380)) {
+      h3 {
+        display: none;
+      }
+    }
   }
   // .header__avatar
   &__avatar {
@@ -35,9 +47,15 @@
   }
   // .header__menu
   &__menu {
+    @media (max-width: $mobile) {
+      display: flex;
+      flex: 1 1 auto;
+      align-items: center;
+    }
   }
   // .header__actions
   &__actions {
+    z-index: 101;
   }
   // .header__button
   &__button {
@@ -46,11 +64,35 @@
 .menu {
   // .menu__body
   &__body {
+    @media (max-width: $mobile) {
+      position: fixed;
+      top: -100%;
+      left: 0;
+      width: 100%;
+      height: fit-content;
+      background: -webkit-linear-gradient(to right, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
+      background: linear-gradient(to right, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
+      padding-top: rem(70);
+      padding-bottom: rem(20);
+      transition: top 0.4s ease 0s;
+      overflow: auto;
+      z-index: 100;
+      .menu-open & {
+        top: 0;
+      }
+    }
+  }
+  // .menu__icon
+  &__icon {
   }
   // .menu__list
   &__list {
     display: flex;
-    gap: rem(40);
+    @include adaptiveValue('gap', 40, 20);
+    @media (max-width: $mobile) {
+      align-items: center;
+      justify-content: center;
+    }
   }
   // .menu__item
   &__item {
@@ -82,6 +124,58 @@
         opacity: 1;
         visibility: visible;
         width: 100%;
+      }
+    }
+  }
+}
+//========================================================================================================================================================
+//Burger
+
+.icon-menu {
+  display: none;
+  @media (max-width: $mobile) {
+    display: block;
+    position: relative;
+    flex: 0 0 rem(30);
+    height: rem(18);
+    z-index: 100;
+    @media (any-hover: none) {
+      cursor: default;
+    }
+    span,
+    &::before,
+    &::after {
+      content: '';
+      transition: all 0.3s ease 0s;
+      right: 0;
+      position: absolute;
+      width: 100%;
+      height: rem(2);
+      background-color: $mainColor;
+    }
+    &::before {
+      top: 0;
+    }
+    &::after {
+      bottom: 0;
+    }
+    span {
+      top: calc(50% - rem(1));
+    }
+    .menu-open & {
+      span {
+        width: 0;
+      }
+      &::before,
+      &::after {
+      }
+      &::before {
+        top: calc(50% - rem(1));
+        transform: rotate(-45deg);
+      }
+      &::after {
+        bottom: calc(50% - rem(1));
+        transform: rotate(45deg);
       }
     }
   }

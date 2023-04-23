@@ -29,7 +29,7 @@ export const LoginPage = () => {
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
-    if (!/(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(e.target.value)) {
+    if (!/(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{6,}/.test(e.target.value)) {
       setPasswordError('Please enter a strong password');
     } else {
       setPasswordError('');
@@ -44,6 +44,13 @@ export const LoginPage = () => {
     e.preventDefault();
     if (!emailError && !passwordError) {
       handleSubmit();
+    } else {
+      if (!email) {
+        setEmailError('Please enter an email');
+      }
+      if (!password) {
+        setPasswordError('Please enter a password');
+      }
     }
   };
 
@@ -67,17 +74,13 @@ export const LoginPage = () => {
   return (
     <div className="page__login-page form-page">
       <div className="form-page__container">
-        <Link to={'/'} className="post-page__button button">
-          Back
-        </Link>
-
         <form className="form-page__form" onSubmit={fieldsValidation}>
           <h1 className="form-page__title">Authorization</h1>
 
           <div className="form-page__item">
-            <div className="form-page__image">
+            {/* <div className="form-page__image">
               <img src="assets/noavatar.png" alt="ImagePost" />
-            </div>
+            </div> */}
           </div>
 
           <div className="form-page__item">

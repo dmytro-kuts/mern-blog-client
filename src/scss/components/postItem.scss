@@ -1,14 +1,23 @@
 .post-item {
   // .post-item__body
   &__body {
-    display: grid;
     overflow: hidden;
     border-radius: rem(8);
+    transition: box-shadow 0.4s ease 0s;
     box-shadow: 0px 0px 6px 4px rgba(0, 0, 0, 0.2);
-    transition: box-shadow 0.3s ease 0s;
+    a {
+      display: grid;
+      grid-template-rows: auto 1fr;
+      min-height: 100%;
+    }
     @media (any-hover: hover){
       &:hover{
-        box-shadow: 0px 4px 8px 6px rgba(0, 0, 0, 0.3);
+        box-shadow: 0px 0px 6px 4px rgba(157, 157, 157, 0.3);
+        .post-item__image{
+          img {
+            transform: scale(1.02);
+          }
+        }
       }
     }
   }
@@ -28,13 +37,7 @@
       transform-origin: center center;
       transition: transform 0.8s ease 0s;
     }
-    @media (any-hover: hover) {
-      &:hover {
-        img {
-          transform: scale(1.01);
-        }
-      }
-    }
+
     &.none {
       @media (min-width:em(1155)){
         background: #000;
@@ -46,26 +49,42 @@
   }
   // .post-item__content
   &__content {
+    display: flex;
+    flex-direction: column;
     padding: rem(16);
+
   }
   // .post-item__info
   &__info {
+    
     display: flex;
     align-items: center;
     justify-content: space-between;
     &:not(:last-child) {
-      margin-bottom: rem(8);
+      margin-bottom: rem(30);
     }
   }
-  // .post-item__name
-  &__name {
+  // .post-item__author
+  &__author {
+    display: flex;
+    align-items: center;
+    gap: rem(8);
+    img{
+      @include adaptiveValue("width", 30, 20);
+      @include adaptiveValue("height", 30, 20);
+    }
+    h3{
+    }
   }
   // .post-item__date
   &__date {
+    @include adaptiveValue("font-size", 18, 16);
   }
   // .post-item__title
   &__title {
-    font-size: rem(24);
+    flex: 1 1 auto;
+    @include adaptiveValue("font-size", 24, 20);
+    line-height: math.div( 26, 24);
     text-transform: uppercase;
     color: $whiteColor;
     &:not(:last-child) {
@@ -74,18 +93,19 @@
   }
   // .post-item__text
   &__text {
+    flex: 0 1 auto;
     p {
-      padding-bottom: rem(1);
-      line-height: math.div(20, 18);
+      text-align: justify;
+      line-height: math.div(24, 18);
       display: -webkit-box;
       text-overflow: ellipsis;
       overflow: hidden;
       width: 100%;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 4;
       -webkit-box-orient: vertical;
     }
     &:not(:last-child) {
-      margin-bottom: rem(8);
+      margin-bottom: rem(12);
     }
   }
   // .post-item__actions

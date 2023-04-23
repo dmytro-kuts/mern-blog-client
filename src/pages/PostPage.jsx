@@ -1,9 +1,17 @@
 import React from 'react';
 import Moment from 'react-moment';
-import { AiFillDelete, AiFillEye, AiOutlineMessage, AiTwotoneEdit, AiOutlineLike} from 'react-icons/ai';
+import {
+  AiFillDelete,
+  AiFillEye,
+  AiOutlineMessage,
+  AiTwotoneEdit,
+  AiOutlineLike,
+} from 'react-icons/ai';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
+
+import badWords from 'bad-words';
 
 import axios from '../utils/axios';
 import { deletePost } from '../redux/slices/post/postSlice';
@@ -37,7 +45,22 @@ export const PostPage = () => {
     try {
       const postId = params.id;
       const userName = user.userName;
-      dispatch(createComment({ postId, comment, userName }));
+      const userAvatar = user.avatarUrl;
+
+      // Check if the comment contains inappropriate language
+      const filter = new badWords();
+      if (filter.isProfane(comment)) {
+        toast('Your comment contains inappropriate language.');
+        return;
+      }
+
+      // Check if the comment has less than 10 characters
+      if (comment.trim().length < 10) {
+        toast('Your comment should have at least 10 characters.');
+        return;
+      }
+
+      dispatch(createComment({ postId, comment, userName, userAvatar }));
       toast('Added a new comment');
       setComment('');
     } catch (error) {
@@ -65,7 +88,7 @@ export const PostPage = () => {
   React.useEffect(() => {
     fetchComments();
   }, [fetchComments]);
-
+  console.log(comments);
   return (
     <section className="page__post post-page">
       <div className="post-page__container">
@@ -74,20 +97,30 @@ export const PostPage = () => {
         </Link>
 
         <div className="post-page__body body-post">
-          <div className="body-post__item">
+          <article className="body-post__item">
             <div className={post.imgUrl ? 'body-post__image' : 'body-post__image none'}>
               {post.imgUrl && <img src={`http://localhost:4444/${post.imgUrl}`} alt="ImagePost" />}
             </div>
             <div className="body-post__content">
               <div className="body-post__info">
-                <div className="body-post__name">{post.userName}</div>
+                <div className="body-post__author">
+                  {post?.userAvatar ? (
+                    <img src={`http://localhost:4444/${post.userAvatar}`} alt="ImagePost" />
+                  ) : (
+                    <img src="assets/noavatar.png" alt="Avatar" />
+                  )}
+
+                  <h3>{post.userName}</h3>
+                </div>
                 <div className="body-post__date">
                   <Moment date={post.createdAt} format="D MMM YYYY" />
                 </div>
               </div>
               <h2 className="body-post__title">{post.title}</h2>
               <div className="body-post__text">
-                <p>{post.text}</p>
+                {post.text?.split('\n').map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))}
               </div>
               <div className="body-post__actions actions-post ">
                 <div className="actions-post__row">
@@ -115,7 +148,7 @@ export const PostPage = () => {
                 )}
               </div>
             </div>
-          </div>
+          </article>
 
           <aside className="body-post__aside aside-body">
             <h3 className="aside-body__title">Comments:</h3>

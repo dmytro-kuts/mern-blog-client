@@ -1,5 +1,6 @@
 .add-post {
   @include adaptiveValue('margin-top', 100, 60);
+  @include adaptiveValue('margin-bottom', 80, 40);
   // .add-post__container
 
   &__container {
@@ -12,7 +13,7 @@
   display: grid;
   gap: rem(20);
   @media (min-width: $mobileSmall) {
-    width: rem(400);
+    width: rem(600);
   }
   @media (max-width: $mobileSmall) {
     width: 100%;
@@ -21,7 +22,7 @@
   &__image {
     img {
       width: 100%;
-      max-height: rem(250);
+      max-height: rem(260);
       border-radius: rem(8);
       // object-fit: cover;
     }
@@ -45,6 +46,9 @@
     }
     // .form-add-post__input_text
     &_text {
+      resize: vertical;
+      min-height: rem(200);
+      max-height: rem(600);
     }
   }
   // .form-add-post__actions

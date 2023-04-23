@@ -15,7 +15,15 @@ export const PostItem = ({ post }) => {
         </div>
         <div className="post-item__content">
           <div className="post-item__info">
-            <div className="post-item__name">{post.userName}</div>
+            <div className="body-post__author">
+              {post?.userAvatar ? (
+                <img src={`http://localhost:4444/${post.userAvatar}`} alt="ImagePost" />
+              ) : (
+                <img src="assets/noavatar.png" alt="Avatar" />
+              )}
+
+              <h3>{post.userName}</h3>
+            </div>
             <div className="post-item__date">
               <Moment date={post.createdAt} format="D MMM YYYY" />
             </div>

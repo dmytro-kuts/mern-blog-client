@@ -1,16 +1,23 @@
-.page {
-  // .page__мain
-  &__мain {
-  }
-}
 .мain {
-  padding-top: rem(60);
+  @include adaptiveValue('margin-top', 100, 80);
+  @include adaptiveValue('margin-bottom', 60, 30);
 
   // .мain__container
   &__container {
     display: flex;
-    @include adaptiveValue('gap',80, 20);
-    padding-bottom: rem(20);
+    @include adaptiveValue('gap',80, 40);
+    @media (max-width:$tablet){
+      flex-direction: column-reverse;
+    }
+    @media (max-width: $mobileSmall){
+      .мain__post-items {
+        margin-left: rem(-15);
+        margin-right: rem(-15);
+      }
+      .post-item__body{
+        border-radius: 0;
+      }
+    }
   }
   // .мain__post-items
   &__post-items {
