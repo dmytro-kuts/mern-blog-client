@@ -6,7 +6,7 @@
   &__container {
     display: flex;
     @include adaptiveValue('gap',80, 40);
-    @media (max-width:$tablet){
+    @media (max-width:$pc){
       flex-direction: column-reverse;
     }
     @media (max-width: $mobileSmall){

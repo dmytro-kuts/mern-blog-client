@@ -85,6 +85,9 @@
     align-items: center;
     gap: rem(8);
     img {
+      overflow: hidden;
+      border-radius: 50%;
+      object-fit: cover;
       @include adaptiveValue('width', 30, 20);
       @include adaptiveValue('height', 30, 20);
     }

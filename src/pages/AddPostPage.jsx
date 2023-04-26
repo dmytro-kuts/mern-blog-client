@@ -1,7 +1,10 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import badWords from 'bad-words';
+
 import { createPost } from '../redux/slices/post/postSlice';
+import { toast } from 'react-toastify';
 
 export const AddPostPage = () => {
   const dispatch = useDispatch();
@@ -16,8 +19,37 @@ export const AddPostPage = () => {
       data.append('title', title);
       data.append('text', text);
       data.append('image', image);
-      dispatch(createPost(data));
-      navigate('/')
+
+      // Check if comment is in English
+      if (/[\u0400-\u04FF]/g.test(title)) {
+        toast.error('Title should be in English');
+        return;
+      }
+      if (/[\u0400-\u04FF]/g.test(text)) {
+        toast.error('Text should be in English');
+        return;
+      }
+      // Check for inappropriate language in the title and text fields
+      const filter = new badWords();
+      if (filter.isProfane(title)) {
+        toast.error('Title contains inappropriate language');
+        return;
+      }
+      if (filter.isProfane(text)) {
+        toast.error('Text contains inappropriate language');
+        return;
+      }
+      // Check that the title and text fields have at least 5 characters
+      if (title.length < 5 || title.length > 30) {
+        toast.error('The title must be at least 5 and no more than 30 characters');
+        return;
+      }
+      if (text.length < 100 || text.length > 3000) {
+        toast.error('The text must be at least 100 and no more than 600 characters');
+      } else {
+        dispatch(createPost(data));
+        navigate('/');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -31,9 +63,7 @@ export const AddPostPage = () => {
             <input onChange={(e) => setImage(e.target.files[0])} type="file" hidden />
           </label>
           <div className="form-add-post__image">
-            { image && (
-              <img src={URL.createObjectURL(image)} alt='ImagePost'/>
-            )}
+            {image && <img src={URL.createObjectURL(image)} alt="ImagePost" />}
           </div>
 
           <label className="form-add-post__label">

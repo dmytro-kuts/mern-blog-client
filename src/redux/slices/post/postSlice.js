@@ -3,6 +3,7 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from '../../../utils/axios';
 
 const initialState = {
+  post: [],
   posts: [],
   popularPosts: [],
   isLoading: false,
@@ -19,6 +20,15 @@ export const createPost = createAsyncThunk('post/createPost', async (params) => 
   }
 });
 
+export const getOnePost = createAsyncThunk('posts/getOnePost', async (params) => {
+  try {
+    const { data } = await axios.get(`/posts/${params.id}`, params);
+    
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+});
 export const getAllPosts = createAsyncThunk('posts/getAllPosts', async () => {
   try {
     const { data } = await axios.get('/posts');
@@ -30,6 +40,7 @@ export const getAllPosts = createAsyncThunk('posts/getAllPosts', async () => {
 });
 
 export const deletePost = createAsyncThunk('post/deletePost', async (id) => {
+  
   try {
     const { data } = await axios.delete(`/posts/${id}`, id);
 
@@ -65,6 +76,21 @@ export const postSlice = createSlice({
       state.status = action.payload.message;
     });
     builder.addCase(createPost.rejected, (state, action) => {
+      state.isLoading = false;
+      state.status = action.payload.message;
+    });
+
+    // getOnePost
+    builder.addCase(getOnePost.pending, (state) => {
+      state.isLoading = true;
+      state.status = null;
+    });
+    builder.addCase(getOnePost.fulfilled, (state, action) => {
+      state.isLoading = false;
+      state.post = action.payload;
+      state.status = action.payload.message;
+    });
+    builder.addCase(getOnePost.rejected, (state, action) => {
       state.isLoading = false;
       state.status = action.payload.message;
     });

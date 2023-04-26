@@ -85,6 +85,7 @@ export const RegisterPage = () => {
       data.append('password', password);
       data.append('image', image);
       dispatch(registerUser(data));
+
     } catch (error) {
       console.log(error);
     }

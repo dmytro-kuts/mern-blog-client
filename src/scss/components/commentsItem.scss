@@ -27,13 +27,15 @@
   }
   // .comments__author
   &__author {
-    flex: 0 1 auto;
     display: grid;
     text-align: center;
     justify-items: center;
-    align-content: center;
     gap: rem(10);
+    min-width: rem(110);
     img {
+      overflow: hidden;
+      border-radius: 50%;
+      object-fit: cover;
       width: rem(50);
       height: rem(50);
     }
@@ -41,10 +43,31 @@
       font-size: rem(14);
     }
   }
+  // .comments__information
+  &__information {
+    
+    display: flex;
+    flex-direction: column;
+    gap: rem(20)
+  }
   // .comments__date
   &__date {
+    flex: 1 1 auto;
     @include adaptiveValue("font-size", 18, 14);
-    align-self: center;
+    align-self: end;
+  }
+  // .comments__delete
+  &__delete {
+    align-self: end;
+    transition: all 0.3s;
+    @media (any-hover: hover){
+      &:hover{
+        transform: translate(0px,rem(-2));
+        path {
+          color: rgb(196, 7, 7);
+        }
+      }
+    }
   }
   // .comments__text
   &__text {

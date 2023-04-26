@@ -4,7 +4,9 @@
     position: relative;
     color: $mainColor;
     font-size: rem(18);
+    line-height: math.div(22, 18);
     padding-left: rem(12);
+
     &:not(:last-child) {
       margin-bottom: rem(10);
     }
@@ -19,8 +21,31 @@
       background-color: $mainColor;
       transform: translate(0px, -50%);
     }
-  }
-  // .aside-body__item
-  &__item {
+    a {
+      position: relative;
+      transition: color 0.4s ease 0s;
+      &::after {
+        content: '';
+        opacity: 0;
+        visibility: hidden;
+        position: absolute;
+        bottom: rem(-4);
+        left: rem(0);
+        height: rem(2);
+        width: 0;
+        background-color: $whiteColor;
+        transition: all 0.3s ease 0s;
+      }
+      @media (any-hover: hover) {
+        &:hover {
+          color: $whiteColor;
+          &::after {
+            opacity: 1;
+            visibility: visible;
+            width: 100%;
+          }
+        }
+      }
+    }
   }
 }

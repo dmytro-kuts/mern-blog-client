@@ -14,28 +14,32 @@ import { toast } from 'react-toastify';
 import badWords from 'bad-words';
 
 import axios from '../utils/axios';
-import { deletePost } from '../redux/slices/post/postSlice';
+import { deletePost, getOnePost } from '../redux/slices/post/postSlice';
 import { checkIsAuth } from '../redux/slices/auth/authSlice';
 import { createComment, getPostComments } from '../redux/slices/comment/commentSlice';
+
 import { CommentItem } from '../components/CommentItem';
 
 export const PostPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const params = useParams();
   const isAuth = useSelector(checkIsAuth);
 
   const { user } = useSelector((state) => state.auth);
   const { comments } = useSelector((state) => state.comment);
-  const params = useParams();
+  const { post } = useSelector((state) => state.post);
 
-  const [post, setPost] = React.useState([]);
   const [comment, setComment] = React.useState('');
+  const [likes, setLikes] = React.useState(post.likes?.length);
 
   const deletePostHandler = () => {
     try {
-      dispatch(deletePost(params.id));
-      toast('The post has been deleted');
-      navigate('/');
+      if (window.confirm('Are you sure you want to delete the post?')) {
+        dispatch(deletePost(params.id));
+        toast.success('The post has been deleted');
+        navigate('/');
+      }
     } catch (error) {
       console.log(error);
     }
@@ -47,48 +51,70 @@ export const PostPage = () => {
       const userName = user.userName;
       const userAvatar = user.avatarUrl;
 
-      // Check if the comment contains inappropriate language
+      // Check if comment is in English
+      if (/[\u0400-\u04FF]/g.test(comment)) {
+        toast.error('Comment should be in English');
+        return;
+      }
+      // Check if comment is empty or less than 6 characters
+      if (comment.trim().length < 6) {
+        toast.error('Comment should contain at least 6 characters');
+        return;
+      }
+      // Check if comment contains bad words
       const filter = new badWords();
       if (filter.isProfane(comment)) {
-        toast('Your comment contains inappropriate language.');
+        toast.error('Comment should not contain profane or offensive language');
         return;
+      } else {
+        dispatch(createComment({ postId, comment, userName, userAvatar }));
+        toast.success('Added a new comment');
+        setComment('');
       }
-
-      // Check if the comment has less than 10 characters
-      if (comment.trim().length < 10) {
-        toast('Your comment should have at least 10 characters.');
-        return;
-      }
-
-      dispatch(createComment({ postId, comment, userName, userAvatar }));
-      toast('Added a new comment');
-      setComment('');
     } catch (error) {
       console.log(error);
     }
   };
 
-  const fetchComments = React.useCallback(async () => {
+  const likePostHandler = React.useCallback(async () => {
     try {
-      dispatch(getPostComments(params.id));
+      const { data } = await axios.get(`/likes/${params.id}`);
+
+      if (data.success) {
+        toast.success('You have favorited');
+        setLikes(data.likes);
+      } else {
+        toast('You have favorited');
+      }
     } catch (error) {
       console.log(error);
     }
-  }, [params.id, dispatch]);
-
-  const fetchPost = React.useCallback(async () => {
-    const { data } = await axios.get(`/posts/${params.id}`);
-    setPost(data);
-  }, [params.id]);
+  },[params]);
 
   React.useEffect(() => {
+    async function fetchPost() {
+      try {
+        dispatch(getOnePost(params));
+      } catch (error) {
+        alert('Error receiving post!');
+        navigate('/');
+      }
+    }
+
+    async function fetchComments() {
+      try {
+        dispatch(getPostComments(params.id));
+      } catch (error) {
+        alert('Error receiving comments!');
+      }
+    }
+
+    setLikes(post.likes?.length);
+
     fetchPost();
-  }, [fetchPost]);
-
-  React.useEffect(() => {
     fetchComments();
-  }, [fetchComments]);
-  console.log(comments);
+  }, [params, dispatch, navigate, post.likes?.length]);
+
   return (
     <section className="page__post post-page">
       <div className="post-page__container">
@@ -130,8 +156,9 @@ export const PostPage = () => {
                   <div className="actions-post__comments">
                     <AiOutlineMessage /> <span>{post.comments?.length || 0}</span>
                   </div>
-                  <button className="actions-post__popular">
-                    <AiOutlineLike /> <span>{post.like?.length || 0}</span>
+                  <button onClick={likePostHandler} className="actions-post__popular">
+                    <AiOutlineLike />
+                    <span>{likes}</span>
                   </button>
                 </div>
                 {user?._id === post.author && (
@@ -167,9 +194,9 @@ export const PostPage = () => {
               </form>
             )}
             <ul className="aside-body__comments comments">
-              {comments?.map((cmt) => (
-                <CommentItem key={cmt?._id} cmt={cmt} />
-              ))}
+              {comments
+                ?.map((cmt) => <CommentItem key={cmt._id} cmt={cmt} user={user} />)
+                .reverse()}
             </ul>
           </aside>
         </div>

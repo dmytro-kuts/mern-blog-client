@@ -4,15 +4,15 @@
   align-items: center;
   justify-content: center;
   padding: rem(2) rem(6);
-  border: 1px solid $mainColor;
+  border: rem(1) solid $mainColor;
   border-radius: rem(8);
   transition: all 0.3s ease 0s;
   min-width: rem(100);
-  min-height: rem(40);
+  min-height: rem(32);
   @media (any-hover: hover) {
     &:hover {
       color: $whiteColor;
-      border: 1px solid $whiteColor;
+      border: rem(1) solid $whiteColor;
       background-color: rgba(198, 198, 198, 0.4);
     }
   }
@@ -20,18 +20,18 @@
     @media (any-hover: hover) {
       &:hover {
         color: $whiteColor;
-        border: 1px solid rgba(34, 255, 0, 0.4);
+        border: rem(1) solid rgba(34, 255, 0, 0.4);
         background-color: rgba(34, 255, 0, 0.4);
       }
     }
   }
   &_red {
-    background-color: rgba(255, 0, 0, 0.4);
+    background-color: rgba(255, 0, 0, 0.2);
     @media (any-hover: hover) {
       &:hover {
         color: $whiteColor;
-        border: 1px solid rgba(255, 0, 0, 0.6);
-        background-color: rgba(255, 0, 0, 0.6);
+        border: rem(1) solid rgba(255, 0, 0, 0.4);
+        background-color: rgba(255, 0, 0, 0.4);
       }
     }
   }
@@ -154,14 +154,14 @@
     padding: rem(4) rem(8);
     border-radius: rem(8);
     background-color: rgba(198, 198, 198, 0.4);
-    border: 1px solid rgba(198, 198, 198, 0.4);
+    border: rem(1) solid rgba(198, 198, 198, 0.4);
     transition: all 0.3s ease 0s;
     &:focus {
-      border: 1px solid $whiteColor;
+      border: rem(1) solid $whiteColor;
     }
     &._error {
       background-color: rgba(255, 0, 0, 0.05);
-      border: 1px solid rgb(255, 0, 0);
+      border: rem(1) solid rgb(255, 0, 0);
     }
   }
   // .form-page__error
@@ -214,6 +214,18 @@
     align-items: center;
     justify-items: center;
     gap: rem(8);
+    svg {
+      transition: all 0.3s ease 0s;
+    }
+    
+    @media (any-hover: hover) {
+      &:hover {
+        svg{
+          transform: translate(0px, -2px);
+        }
+        
+      }
+    }
   }
   // .actions-post__edit
   &__edit {

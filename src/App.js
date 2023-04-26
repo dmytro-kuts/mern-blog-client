@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { Layout } from './components/Layout';
 import { MainPage } from './pages/MainPage';
@@ -13,14 +13,17 @@ import { AddPostPage } from './pages/AddPostPage';
 import { RegisterPage } from './pages/RegisterPage';
 import { LoginPage } from './pages/LoginPage';
 import { EditPostPage } from './pages/EditPostPage';
-import {  getMe } from './redux/slices/auth/authSlice';
+import { NotFound } from './pages/NotFound';
+
+import { checkIsAuth, getMe } from './redux/slices/auth/authSlice';
 
 function App() {
   const dispatch = useDispatch();
+  const isAuth = useSelector(checkIsAuth);
 
   React.useEffect(() => {
     dispatch(getMe());
-  }, [dispatch]);
+  }, [dispatch, isAuth]);
   return (
     <Layout>
       <Routes>
@@ -31,9 +34,10 @@ function App() {
         <Route path="add" element={<AddPostPage />} />
         <Route path=":id" element={<PostPage />} />
         <Route path=":id/edit" element={<EditPostPage />} />
+        <Route path="*" element={<NotFound />} />
       </Routes>
 
-      <ToastContainer position='bottom-right' theme="dark" autoClose={1500} />
+      <ToastContainer position="bottom-right" theme="dark" autoClose={2000} />
     </Layout>
   );
 }

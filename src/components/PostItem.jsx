@@ -15,7 +15,7 @@ export const PostItem = ({ post }) => {
         </div>
         <div className="post-item__content">
           <div className="post-item__info">
-            <div className="body-post__author">
+            <div className="post-item__author">
               {post?.userAvatar ? (
                 <img src={`http://localhost:4444/${post.userAvatar}`} alt="ImagePost" />
               ) : (
@@ -40,7 +40,7 @@ export const PostItem = ({ post }) => {
               <AiOutlineMessage /> <span>{post.comments?.length || 0}</span>
             </div>
             <button className="post-item__popular">
-              <AiOutlineLike /> <span>{post.like?.length || 0}</span>
+              <AiOutlineLike /> <span>{post.likes?.length || 0}</span>
             </button>
           </div>
         </div>

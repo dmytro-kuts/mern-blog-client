@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { updatePost } from '../redux/slices/post/postSlice';
 import axios from '../utils/axios';
@@ -23,6 +24,7 @@ export const EditPostPage = () => {
       dataUpdate.append('id', params.id);
       dataUpdate.append('image', newImage);
       dispatch(updatePost(dataUpdate));
+      toast.success('The post update');
       navigate('/');
     } catch (error) {
       console.log(error);

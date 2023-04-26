@@ -54,6 +54,14 @@ export const LoginPage = () => {
     }
   };
 
+  const handleSubmit = () => {
+    try {
+      dispatch(loginUser({ email, password }));
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   React.useEffect(() => {
     if (status) {
       toast(status);
@@ -63,13 +71,7 @@ export const LoginPage = () => {
     }
   }, [status, isAuth, navigate]);
 
-  const handleSubmit = () => {
-    try {
-      dispatch(loginUser({ email, password }));
-    } catch (error) {
-      console.log(error);
-    }
-  };
+
 
   return (
     <div className="page__login-page form-page">

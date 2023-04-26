@@ -10,10 +10,10 @@
       grid-template-rows: auto 1fr;
       min-height: 100%;
     }
-    @media (any-hover: hover){
-      &:hover{
+    @media (any-hover: hover) {
+      &:hover {
         box-shadow: 0px 0px 6px 4px rgba(157, 157, 157, 0.3);
-        .post-item__image{
+        .post-item__image {
           img {
             transform: scale(1.02);
           }
@@ -39,10 +39,11 @@
     }
 
     &.none {
-      @media (min-width:em(1155)){
-        background: #000;
+      @media (min-width: em(861)) {
+        background: -webkit-linear-gradient(to top, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
+        background: linear-gradient(to top, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
       }
-      @media (max-width: em(1155)){
+      @media (max-width: em(862)) {
         padding-bottom: 0;
       }
     }
@@ -52,11 +53,9 @@
     display: flex;
     flex-direction: column;
     padding: rem(16);
-
   }
   // .post-item__info
   &__info {
-    
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -69,22 +68,26 @@
     display: flex;
     align-items: center;
     gap: rem(8);
-    img{
-      @include adaptiveValue("width", 30, 20);
-      @include adaptiveValue("height", 30, 20);
+    position: relative;
+    img {
+      overflow: hidden;
+      border-radius: 50%;
+      object-fit: cover;
+      @include adaptiveValue('width', 30, 20);
+      @include adaptiveValue('height', 30, 20);
     }
-    h3{
+    h3 {
     }
   }
   // .post-item__date
   &__date {
-    @include adaptiveValue("font-size", 18, 16);
+    @include adaptiveValue('font-size', 18, 16);
   }
   // .post-item__title
   &__title {
     flex: 1 1 auto;
-    @include adaptiveValue("font-size", 24, 20);
-    line-height: math.div( 26, 24);
+    @include adaptiveValue('font-size', 24, 20);
+    line-height: math.div(26, 24);
     text-transform: uppercase;
     color: $whiteColor;
     &:not(:last-child) {
@@ -119,21 +122,21 @@
   &__view {
     display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
     gap: rem(8);
   }
   // .post-item__comment
   &__comments {
     display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
     gap: rem(8);
   }
   // .post-item__popular
   &__popular {
     display: flex;
     align-items: center;
-    justify-items: center;
+    justify-content: center;
     gap: rem(8);
   }
 }

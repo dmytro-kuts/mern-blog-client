@@ -102,7 +102,7 @@ export const authSlice = createSlice({
       state.token = action.payload?.token;
       state.status = null;
     });
-    builder.addCase(getMe.rejected, (state, action) => {
+    builder.addCase(getMe.rejected, (state) => {
       state.isLoading = false;
       state.status = null;
     });
