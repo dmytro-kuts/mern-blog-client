@@ -60,7 +60,7 @@ export const EditPostPage = () => {
             />
           </label>
           <div className="form-add-post__image">
-            {oldImage && <img src={`http://localhost:4444/${oldImage}`} alt="ImagePost" />}
+            {oldImage && <img src={`${process.env.REACT_APP_API_URL}/${oldImage}`} alt="ImagePost" />}
             {newImage && <img src={URL.createObjectURL(newImage)} alt="ImagePost" />}
           </div>
 

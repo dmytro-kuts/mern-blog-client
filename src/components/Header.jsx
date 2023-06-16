@@ -36,7 +36,7 @@ export const Header = () => {
         <div className="header__logo">
           <div className="header__avatar">
             {user?.avatarUrl ? (
-              <img src={`http://localhost:4444/${user.avatarUrl}`} alt="ImagePost" />
+              <img src={`${process.env.REACT_APP_API_URL}/${user.avatarUrl}`} alt="ImagePost" />
             ) : (
               <img src="assets/noavatar.png" alt="ImagePost" />
             )}

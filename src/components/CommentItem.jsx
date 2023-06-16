@@ -24,7 +24,7 @@ export const CommentItem = ({ cmt, user }) => {
       <div className="comments__header">
         <div className="comments__author">
           {cmt?.userAvatar ? (
-            <img src={`http://localhost:4444/${cmt.userAvatar}`} alt="ImagePost" />
+            <img src={`${process.env.REACT_APP_API_URL}/${cmt.userAvatar}`} alt="ImagePost" />
           ) : (
             <img src="assets/noavatar.png" alt="Avatar" />
           )}

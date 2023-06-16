@@ -89,7 +89,7 @@ export const PostPage = () => {
     } catch (error) {
       console.log(error);
     }
-  },[params]);
+  }, [params]);
 
   React.useEffect(() => {
     async function fetchPost() {
@@ -125,13 +125,18 @@ export const PostPage = () => {
         <div className="post-page__body body-post">
           <article className="body-post__item">
             <div className={post.imgUrl ? 'body-post__image' : 'body-post__image none'}>
-              {post.imgUrl && <img src={`http://localhost:4444/${post.imgUrl}`} alt="ImagePost" />}
+              {post.imgUrl && (
+                <img src={`${process.env.REACT_APP_API_URL}/${post.imgUrl}`} alt="ImagePost" />
+              )}
             </div>
             <div className="body-post__content">
               <div className="body-post__info">
                 <div className="body-post__author">
                   {post?.userAvatar ? (
-                    <img src={`http://localhost:4444/${post.userAvatar}`} alt="ImagePost" />
+                    <img
+                      src={`${process.env.REACT_APP_API_URL}/${post.userAvatar}`}
+                      alt="ImagePost"
+                    />
                   ) : (
                     <img src="assets/noavatar.png" alt="Avatar" />
                   )}

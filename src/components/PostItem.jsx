@@ -11,13 +11,15 @@ export const PostItem = ({ post }) => {
     <article className="post-item__body">
       <Link to={`/${post._id}`}>
         <div className={post.imgUrl ? 'post-item__image' : 'post-item__image none'}>
-          {post.imgUrl && <img src={`http://localhost:4444/${post.imgUrl}`} alt="ImagePost" />}
+          {post.imgUrl && (
+            <img src={`${process.env.REACT_APP_API_URL}/${post.imgUrl}`} alt="ImagePost" />
+          )}
         </div>
         <div className="post-item__content">
           <div className="post-item__info">
             <div className="post-item__author">
               {post?.userAvatar ? (
-                <img src={`http://localhost:4444/${post.userAvatar}`} alt="ImagePost" />
+                <img src={`${process.env.REACT_APP_API_URL}/${post.userAvatar}`} alt="ImagePost" />
               ) : (
                 <img src="assets/noavatar.png" alt="Avatar" />
               )}
