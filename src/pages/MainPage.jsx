@@ -15,7 +15,7 @@ export const MainPage = () => {
     dispatch(getAllPosts());
   }, [dispatch, navigate]);
 
-  if (!posts) {
+  if (!posts.length) {
     return (
       <div className="мain__container">Loading...</div>
     );
