@@ -16,6 +16,10 @@ a:focus,
 a:active {
   outline: none;
 }
+html {
+  overflow-x: hidden;
+  margin-right: calc(-1 * (100vw - 100%));
+}
 html,
 body {
   height: 100%;
@@ -72,8 +76,8 @@ input:-webkit-autofill:active {
 }
 
 ::-webkit-scrollbar {
-  width: rem(3);
-  height: rem(3);
+  width: rem(6);
+  height: rem(6);
 }
 ::-webkit-scrollbar-button {
   background-color: #666;
@@ -82,12 +86,11 @@ input:-webkit-autofill:active {
   background-color: #999;
 }
 ::-webkit-scrollbar-track-piece {
-  background-color: #ffffff;
+  background-color: #a7a7a7;
 }
 ::-webkit-scrollbar-thumb {
   height: 50px;
   background-color: #666;
-  border-radius: 3px;
 }
 ::-webkit-scrollbar-corner {
   background-color: #999;
