@@ -1,17 +1,21 @@
 import React from 'react';
 import { Link, NavLink, useNavigate, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { checkIsAuth, logout } from '../redux/slices/auth/authSlice';
+import { RootState, useAppDispatch } from '../redux/store';
+import  noAvatarPng  from '../assets/noavatar.png';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const Header = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const isAuth = useSelector(checkIsAuth);
 
-  const { user } = useSelector((state) => state.auth);
+  const { user } = useSelector((state: RootState) => state.auth);
 
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
@@ -36,9 +40,9 @@ export const Header = () => {
         <div className="header__logo">
           <div className="header__avatar">
             {user?.avatarUrl ? (
-              <img src={`${process.env.REACT_APP_API_URL}/${user.avatarUrl}`} alt="ImagePost" />
+              <img src={`${API_URL}/${user.avatarUrl}`} alt="ImagePost" />
             ) : (
-              <img src="assets/noavatar.png" alt="ImagePost" />
+              <img src={noAvatarPng } alt="ImagePost" />
             )}
           </div>
           <h3>{user?.userName}</h3>

@@ -1,12 +1,29 @@
-import React from 'react';
-import Moment from 'react-moment';
-import { useDispatch } from 'react-redux';
+// import Moment from 'react-moment';
 import { deleteComment } from '../redux/slices/comment/commentSlice';
 import { AiFillDelete } from 'react-icons/ai';
 import { toast } from 'react-toastify';
 
-export const CommentItem = ({ cmt, user }) => {
-  const dispatch = useDispatch();
+import { useAppDispatch } from '../redux/store';
+
+import  noAvatarPng  from '../assets/noavatar.png';
+
+const API_URL = import.meta.env.VITE_API_URL;
+
+interface CommentItemProps {
+  cmt: {
+    _id: string;
+    userAvatar?: string;
+    userName: string;
+    createdAt?: string;
+    comment: string;
+  };
+  user: {
+    userName: string;
+  } | null;
+}
+
+export const CommentItem: React.FC<CommentItemProps> = ({ cmt, user }) => {
+  const dispatch = useAppDispatch();
 
   const deleteCommentHandler = () => {
     try {
@@ -24,15 +41,15 @@ export const CommentItem = ({ cmt, user }) => {
       <div className="comments__header">
         <div className="comments__author">
           {cmt?.userAvatar ? (
-            <img src={`${process.env.REACT_APP_API_URL}/${cmt.userAvatar}`} alt="ImagePost" />
+            <img src={`${API_URL}/${cmt.userAvatar}`} alt="ImagePost" />
           ) : (
-            <img src="assets/noavatar.png" alt="Avatar" />
+            <img src={noAvatarPng } alt="Avatar" />
           )}
           <h3>{cmt.userName}</h3>
         </div>
         <div className="comments__information">
           <div className="comments__date">
-            <Moment date={cmt.createdAt} format="HH:mm   DD-MM-YYYY " />
+            {/* <Moment date={cmt.createdAt} format="HH:mm DD-MM-YYYY" /> */}
           </div>
           {user?.userName === cmt.userName && (
             <button onClick={deleteCommentHandler} className="comments__delete">

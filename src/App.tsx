@@ -3,7 +3,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { ToastContainer } from 'react-toastify';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 
 import { Layout } from './components/Layout';
 import { MainPage } from './pages/MainPage';
@@ -16,9 +16,10 @@ import { EditPostPage } from './pages/EditPostPage';
 import { NotFound } from './pages/NotFound';
 
 import { checkIsAuth, getMe } from './redux/slices/auth/authSlice';
+import { useAppDispatch } from './redux/store';
 
 function App() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const isAuth = useSelector(checkIsAuth);
 
   React.useEffect(() => {

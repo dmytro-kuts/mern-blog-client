@@ -1,15 +1,16 @@
 import React from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {  useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 import { PostItem } from '../components/PostItem';
 import { PopularPosts } from '../components/PopularPosts';
 import { getAllPosts } from '../redux/slices/post/postSlice';
+import { RootState, useAppDispatch } from '../redux/store';
 
 export const MainPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { posts, popularPosts } = useSelector((state) => state.post);
+  const { posts, popularPosts } = useSelector((state: RootState) => state.post);
 
   React.useEffect(() => {
     dispatch(getAllPosts());

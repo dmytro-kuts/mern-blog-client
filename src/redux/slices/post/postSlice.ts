@@ -1,16 +1,55 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { Params } from 'react-router-dom';
 
 import axios from '../../../utils/axios';
 
-const initialState = {
-  post: [],
+export interface Like {
+  userId: string;
+  postId: string;
+}
+
+export interface Comment {
+  _id: string;
+  userAvatar: string;
+  userName: string;
+  comment: string;
+  author: string;
+}
+export interface Post {
+  message?: string | null;
+  _id: string;
+  userAvatar: string;
+  userName: string;
+  title: string;
+  text: string;
+  imgUrl: string;
+  views: number;
+  author: string;
+  comments: Comment[];
+  likes: Like[];
+  createdAt: string;
+  updatedAt: string;
+  __v: number;
+}
+
+export interface PostState {
+  post: Post | null;
+  posts: Post[];
+  popularPosts: Post[];
+  isLoading: boolean;
+  status: string | null;
+}
+
+const initialState: PostState = {
+  post: null,
   posts: [],
   popularPosts: [],
   isLoading: false,
   status: null,
 };
 
-export const createPost = createAsyncThunk('post/createPost', async (params) => {
+//========================================================================================================================================================
+export const createPost = createAsyncThunk('post/createPost', async (params: FormData) => {
   try {
     const { data } = await axios.post('/posts', params);
 
@@ -19,16 +58,21 @@ export const createPost = createAsyncThunk('post/createPost', async (params) => 
     console.log(error);
   }
 });
+//========================================================================================================================================================
 
-export const getOnePost = createAsyncThunk('posts/getOnePost', async (params) => {
-  try {
-    const { data } = await axios.get(`/posts/${params.id}`, params);
-    
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-});
+export const getOnePost = createAsyncThunk(
+  'posts/getOnePost',
+  async (params: Readonly<Params<string>>) => {
+    try {
+      const { data } = await axios.get(`/posts/${params.id}`, params);
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
+//========================================================================================================================================================
+
 export const getAllPosts = createAsyncThunk('posts/getAllPosts', async () => {
   try {
     const { data } = await axios.get('/posts');
@@ -38,28 +82,32 @@ export const getAllPosts = createAsyncThunk('posts/getAllPosts', async () => {
     console.log(error);
   }
 });
+//========================================================================================================================================================
 
-export const deletePost = createAsyncThunk('post/deletePost', async (id) => {
-  
+export const deletePost = createAsyncThunk('post/deletePost', async (id: string) => {
   try {
-    const { data } = await axios.delete(`/posts/${id}`, id);
+    const { data } = await axios.delete(`/posts/${id}`, {
+      data: { id },
+    });
 
     return data;
   } catch (error) {
     console.log(error);
   }
 });
+//========================================================================================================================================================
 
-export const updatePost = createAsyncThunk('post/updatePost', async (dataUpdate) => {
+export const updatePost = createAsyncThunk('post/updatePost', async (dataUpdate: FormData) => {
   try {
-    const { data } = await axios.put(`/posts/${dataUpdate.id}`, dataUpdate);
+    const id = dataUpdate.get('id') as string;
+    const { data } = await axios.put(`/posts/${id}`, dataUpdate);
 
     return data;
   } catch (error) {
     console.log(error);
   }
 });
-
+//========================================================================================================================================================
 export const postSlice = createSlice({
   name: 'post',
   initialState,
@@ -71,13 +119,15 @@ export const postSlice = createSlice({
       state.status = null;
     });
     builder.addCase(createPost.fulfilled, (state, action) => {
-      state.isLoading = false;
-      state.posts.push(action.payload);
-      state.status = action.payload.message;
+      if (action.payload) {
+        state.isLoading = false;
+        state.posts.push(action.payload);
+        state.status = action.payload.message;
+      }
     });
     builder.addCase(createPost.rejected, (state, action) => {
       state.isLoading = false;
-      state.status = action.payload.message;
+      state.status = String(action.payload);
     });
 
     // getOnePost
@@ -90,9 +140,10 @@ export const postSlice = createSlice({
       state.post = action.payload;
       state.status = action.payload.message;
     });
+
     builder.addCase(getOnePost.rejected, (state, action) => {
       state.isLoading = false;
-      state.status = action.payload.message;
+      state.status = String(action.payload);
     });
 
     // getAllPosts
@@ -108,7 +159,7 @@ export const postSlice = createSlice({
     });
     builder.addCase(getAllPosts.rejected, (state, action) => {
       state.isLoading = false;
-      state.status = action.payload.message;
+      state.status = String(action.payload);
     });
 
     // deletePost
@@ -123,7 +174,7 @@ export const postSlice = createSlice({
     });
     builder.addCase(deletePost.rejected, (state, action) => {
       state.isLoading = false;
-      state.status = action.payload.message;
+      state.status = String(action.payload);
     });
 
     // updatePost
@@ -134,12 +185,14 @@ export const postSlice = createSlice({
     builder.addCase(updatePost.fulfilled, (state, action) => {
       state.isLoading = false;
       const index = state.posts.findIndex((post) => post._id === action.payload._id);
-      state.posts[index] = action.payload;
+      if (index !== -1) {
+        state.posts[index] = action.payload;
+      }
       state.status = action.payload.message;
     });
     builder.addCase(updatePost.rejected, (state, action) => {
       state.isLoading = false;
-      state.status = action.payload.message;
+      state.status = String(action.payload);
     });
   },
 });

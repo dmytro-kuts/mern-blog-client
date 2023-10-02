@@ -1,43 +1,54 @@
 import React from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { Link, Params, useNavigate, useParams } from 'react-router-dom';
+
 import { toast } from 'react-toastify';
 
 import { updatePost } from '../redux/slices/post/postSlice';
 import axios from '../utils/axios';
+import { useAppDispatch } from '../redux/store';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const EditPostPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const params = useParams();
+  const params: Readonly<Params<string>> = useParams();
 
   const [title, setTitle] = React.useState('');
   const [text, setText] = React.useState('');
   const [oldImage, setOldImage] = React.useState('');
-  const [newImage, setNewImage] = React.useState('');
+  const [newImage, setNewImage] = React.useState<File | null>(null);
 
   const handlerSubmit = () => {
     try {
-      const dataUpdate = new FormData();
-      dataUpdate.append('title', title);
-      dataUpdate.append('text', text);
-      dataUpdate.append('id', params.id);
-      dataUpdate.append('image', newImage);
-      dispatch(updatePost(dataUpdate));
-      toast.success('The post update');
-      navigate('/');
+      if (params.id) {
+        const dataUpdate: FormData = new FormData();
+        dataUpdate.append('title', title);
+        dataUpdate.append('text', text);
+
+        dataUpdate.append('id', params.id);
+
+        if (newImage) {
+          dataUpdate.append('image', newImage);
+        }
+        dispatch(updatePost(dataUpdate));
+        toast.success('The post has been updated');
+        navigate('/');
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-
-
   const fetchPost = React.useCallback(async () => {
-    const { data } = await axios.get(`/posts/${params.id}`);
-    setTitle(data.title);
-    setText(data.text);
-    setOldImage(data.imgUrl);
+    try {
+      const { data } = await axios.get(`/posts/${params.id}`);
+      setTitle(data.title);
+      setText(data.text);
+      setOldImage(data.imgUrl);
+    } catch (error) {
+      console.error(error);
+    }
   }, [params.id]);
 
   React.useEffect(() => {
@@ -54,13 +65,15 @@ export const EditPostPage = () => {
               type="file"
               hidden
               onChange={(e) => {
-                setNewImage(e.target.files[0]);
-                setOldImage('');
+                if (e.target.files) {
+                  setNewImage(e.target.files[0]);
+                  setOldImage('');
+                }
               }}
             />
           </label>
           <div className="form-add-post__image">
-            {oldImage && <img src={`${process.env.REACT_APP_API_URL}/${oldImage}`} alt="ImagePost" />}
+            {oldImage && <img src={`${API_URL}/${oldImage}`} alt="ImagePost" />}
             {newImage && <img src={URL.createObjectURL(newImage)} alt="ImagePost" />}
           </div>
 

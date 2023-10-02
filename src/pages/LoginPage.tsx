@@ -1,15 +1,18 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import { checkIsAuth, loginUser } from '../redux/slices/auth/authSlice';
+import { RootState, useAppDispatch } from '../redux/store';
+
+// import  noAvatarPng  from '../assets/noavatar.png';
 
 export const LoginPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useSelector((state: RootState) => state.auth);
   const isAuth = useSelector(checkIsAuth);
 
   const [email, setEmail] = React.useState('');
@@ -18,7 +21,7 @@ export const LoginPage = () => {
   const [passwordError, setPasswordError] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     if (!/\S+@\S+\.\S+/.test(e.target.value)) {
       setEmailError('Please enter a valid email');
@@ -27,7 +30,7 @@ export const LoginPage = () => {
     }
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     if (!/(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{6,}/.test(e.target.value)) {
       setPasswordError('Please enter a strong password');
@@ -40,7 +43,7 @@ export const LoginPage = () => {
     setShowPassword(!showPassword);
   };
 
-  const fieldsValidation = (e) => {
+  const fieldsValidation: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (!emailError && !passwordError) {
       handleSubmit();
@@ -71,8 +74,6 @@ export const LoginPage = () => {
     }
   }, [status, isAuth, navigate]);
 
-
-
   return (
     <div className="page__login-page form-page">
       <div className="form-page__container">
@@ -81,7 +82,7 @@ export const LoginPage = () => {
 
           <div className="form-page__item">
             {/* <div className="form-page__image">
-              <img src="assets/noavatar.png" alt="ImagePost" />
+              <img src={noAvatarPng } alt="ImagePost" />
             </div> */}
           </div>
 

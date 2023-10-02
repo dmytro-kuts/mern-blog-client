@@ -1,4 +1,5 @@
 import { configureStore } from '@reduxjs/toolkit';
+import { useDispatch } from 'react-redux';
 
 import authSlice from './slices/auth/authSlice';
 import postSlice from './slices/post/postSlice';
@@ -11,3 +12,10 @@ export const store = configureStore({
     comment: commentSlice,
   },
 });
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>;
+
+export type AppDispatch = typeof store.dispatch;
+export const useAppDispatch: () => AppDispatch = useDispatch;

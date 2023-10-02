@@ -1,5 +1,5 @@
 import React from 'react';
-import Moment from 'react-moment';
+// import Moment from 'react-moment';
 import {
   AiFillDelete,
   AiFillEye,
@@ -7,8 +7,8 @@ import {
   AiTwotoneEdit,
   AiOutlineLike,
 } from 'react-icons/ai';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Link, Params, useNavigate, useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import badWords from 'bad-words';
@@ -19,24 +19,29 @@ import { checkIsAuth } from '../redux/slices/auth/authSlice';
 import { createComment, getPostComments } from '../redux/slices/comment/commentSlice';
 
 import { CommentItem } from '../components/CommentItem';
+import { RootState, useAppDispatch } from '../redux/store';
+
+import noAvatarPng from '../assets/noavatar.png';
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const PostPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const params = useParams();
+  const params: Readonly<Params<string>> = useParams();
   const isAuth = useSelector(checkIsAuth);
 
-  const { user } = useSelector((state) => state.auth);
-  const { comments } = useSelector((state) => state.comment);
-  const { post } = useSelector((state) => state.post);
+  const { user } = useSelector((state: RootState) => state.auth);
+  const { comments } = useSelector((state: RootState) => state.comment);
+  const { post } = useSelector((state: RootState) => state.post);
 
-  const [comment, setComment] = React.useState('');
-  const [likes, setLikes] = React.useState(post.likes?.length);
+  const [comment, setComment] = React.useState<string>('');
+  const [likes, setLikes] = React.useState<number | undefined>(post?.likes?.length);
 
   const deletePostHandler = () => {
     try {
       if (window.confirm('Are you sure you want to delete the post?')) {
-        dispatch(deletePost(params.id));
+        dispatch(deletePost(params.id as string));
         toast.success('The post has been deleted');
         navigate('/');
       }
@@ -103,17 +108,19 @@ export const PostPage = () => {
 
     async function fetchComments() {
       try {
-        dispatch(getPostComments(params.id));
+        if (params.id) {
+          dispatch(getPostComments(params.id));
+        }
       } catch (error) {
         alert('Error receiving comments!');
       }
     }
 
-    setLikes(post.likes?.length);
+    setLikes(post?.likes?.length);
 
     fetchPost();
     fetchComments();
-  }, [params, dispatch, navigate, post.likes?.length]);
+  }, [params, dispatch, navigate, post?.likes?.length]);
 
   return (
     <section className="page__post post-page">
@@ -124,49 +131,44 @@ export const PostPage = () => {
 
         <div className="post-page__body body-post">
           <article className="body-post__item">
-            <div className={post.imgUrl ? 'body-post__image' : 'body-post__image none'}>
-              {post.imgUrl && (
-                <img src={`${process.env.REACT_APP_API_URL}/${post.imgUrl}`} alt="ImagePost" />
-              )}
+            <div className={post?.imgUrl ? 'body-post__image' : 'body-post__image none'}>
+              {post?.imgUrl && <img src={`${API_URL}/${post?.imgUrl}`} alt="ImagePost" />}
             </div>
             <div className="body-post__content">
               <div className="body-post__info">
                 <div className="body-post__author">
                   {post?.userAvatar ? (
-                    <img
-                      src={`${process.env.REACT_APP_API_URL}/${post.userAvatar}`}
-                      alt="ImagePost"
-                    />
+                    <img src={`${API_URL}/${post.userAvatar}`} alt="ImagePost" />
                   ) : (
-                    <img src="assets/noavatar.png" alt="Avatar" />
+                    <img src={noAvatarPng} alt="Avatar" />
                   )}
 
-                  <h3>{post.userName}</h3>
+                  <h3>{post?.userName}</h3>
                 </div>
                 <div className="body-post__date">
-                  <Moment date={post.createdAt} format="D MMM YYYY" />
+                  {/* <Moment date={post?.createdAt} format="D MMM YYYY" /> */}
                 </div>
               </div>
-              <h2 className="body-post__title">{post.title}</h2>
+              <h2 className="body-post__title">{post?.title}</h2>
               <div className="body-post__text">
-                {post.text?.split('\n').map((paragraph, index) => (
+                {post?.text?.split('\n').map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
               </div>
               <div className="body-post__actions actions-post ">
                 <div className="actions-post__row">
                   <div className="actions-post__view">
-                    <AiFillEye /> <span>{post.views}</span>
+                    <AiFillEye /> <span>{post?.views}</span>
                   </div>
                   <div className="actions-post__comments">
-                    <AiOutlineMessage /> <span>{post.comments?.length || 0}</span>
+                    <AiOutlineMessage /> <span>{post?.comments?.length || 0}</span>
                   </div>
                   <button onClick={likePostHandler} className="actions-post__popular">
                     <AiOutlineLike />
                     <span>{likes}</span>
                   </button>
                 </div>
-                {user?._id === post.author && (
+                {user?._id === post?.author && (
                   <div className="actions-post__row">
                     <button className="actions-post__edit">
                       <Link to={`/${params.id}/edit`}>

@@ -1,17 +1,41 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 import axios from '../../../utils/axios';
+import { RootState } from '../../store';
 
-const initialState = {
+export interface User {
+  _id: string;
+  userName: string;
+  email: string;
+  password: string;
+  posts: string[];
+  avatarUrl?: string;
+}
+
+export interface AuthState {
+  user: any | null;
+  token: string | null;
+  isLoading: boolean;
+  status: string | null;
+}
+
+
+export interface LoginParams {
+  email: string;
+  password: string;
+}
+
+export const initialState: AuthState = {
   user: null,
   token: null,
   isLoading: false,
   status: null,
 };
+//========================================================================================================================================================
 
 export const registerUser = createAsyncThunk(
   'auth/registerUser',
-  async (params) => {
+  async (params: FormData) => {
     try {
       const { data } = await axios.post('/auth/register', params);
 
@@ -25,29 +49,35 @@ export const registerUser = createAsyncThunk(
     }
   },
 );
+//========================================================================================================================================================
 
-export const loginUser = createAsyncThunk('auth/loginUser', async ({ email, password }) => {
-  try {
-    const { data } = await axios.post('/auth/login', {
-      email,
-      password,
-    });
+export const loginUser = createAsyncThunk(
+  'auth/loginUser',
+  async ({ email, password }: LoginParams) => {
+    try {
+      const { data } = await axios.post('/auth/login', {
+        email,
+        password,
+      });
 
-    if (data.token) {
-      window.localStorage.setItem('token', data.token);
+      if (data.token) {
+        window.localStorage.setItem('token', data.token);
+      }
+
+      return data;
+    } catch (error) {
+      console.log(error);
     }
-
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-});
+  },
+);
+//========================================================================================================================================================
 
 export const getMe = createAsyncThunk('auth/getMe', async () => {
   const { data } = await axios.get('/auth/me');
 
   return data;
 });
+//========================================================================================================================================================
 
 export const authSlice = createSlice({
   name: 'auth',
@@ -74,7 +104,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(registerUser.rejected, (state, action) => {
       state.isLoading = false;
-      state.status = action.payload.message;
+      state.status = String(action.payload);
     });
     // loginUser
     builder.addCase(loginUser.pending, (state) => {
@@ -89,7 +119,7 @@ export const authSlice = createSlice({
     });
     builder.addCase(loginUser.rejected, (state, action) => {
       state.isLoading = false;
-      state.status = action.payload.message;
+      state.status = String(action.payload);
     });
     // getMe
     builder.addCase(getMe.pending, (state) => {
@@ -109,7 +139,7 @@ export const authSlice = createSlice({
   },
 });
 
-export const checkIsAuth = (state) => Boolean(state.auth.token);
+export const checkIsAuth = (state: RootState) => Boolean(state.auth.token);
 
 export const { logout } = authSlice.actions;
 export default authSlice.reducer;

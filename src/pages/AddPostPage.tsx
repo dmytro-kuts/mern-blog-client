@@ -1,24 +1,26 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
 import badWords from 'bad-words';
 
 import { createPost } from '../redux/slices/post/postSlice';
 import { toast } from 'react-toastify';
+import { useAppDispatch } from '../redux/store';
 
 export const AddPostPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [title, setTitle] = React.useState('');
   const [text, setText] = React.useState('');
-  const [image, setImage] = React.useState('');
+  const [image, setImage] = React.useState<File | null>(null);
 
   const handleSubmit = () => {
     try {
-      const data = new FormData();
+      const data: FormData = new FormData();
       data.append('title', title);
       data.append('text', text);
-      data.append('image', image);
+      if (image) {
+        data.append('image', image);
+      }
 
       // Check if comment is in English
       if (/[\u0400-\u04FF]/g.test(title)) {
@@ -46,21 +48,29 @@ export const AddPostPage = () => {
       }
       if (text.length < 100 || text.length > 3000) {
         toast.error('The text must be at least 100 and no more than 600 characters');
-      } else {
-        dispatch(createPost(data));
-        navigate('/');
+        return;
       }
+
+      dispatch(createPost(data));
+      navigate('/');
     } catch (error) {
       console.log(error);
     }
   };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      setImage(e.target.files[0]);
+    }
+  };
+
   return (
     <div className="page__add-post add-post">
       <div className="add-post__container">
         <form className="add-post__form form-add-post" onSubmit={(e) => e.preventDefault()}>
           <label className="form-add-post__label button">
             Add image
-            <input onChange={(e) => setImage(e.target.files[0])} type="file" hidden />
+            <input onChange={handleImageChange} type="file" hidden />
           </label>
           <div className="form-add-post__image">
             {image && <img src={URL.createObjectURL(image)} alt="ImagePost" />}

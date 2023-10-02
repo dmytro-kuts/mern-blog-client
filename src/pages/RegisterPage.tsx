@@ -1,20 +1,23 @@
-import React from 'react';
+import React, { ChangeEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import Filter from 'bad-words';
 
 import { checkIsAuth, registerUser } from '../redux/slices/auth/authSlice';
+import { RootState, useAppDispatch } from '../redux/store';
+
+import noAvatarPng from '../assets/noavatar.png';
 
 export const RegisterPage = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const { status } = useSelector((state) => state.auth);
+  const { status } = useSelector((state: RootState) => state.auth);
   const isAuth = useSelector(checkIsAuth);
 
-  const [image, setImage] = React.useState('');
+  const [image, setImage] = React.useState<File | null>(null);
   const [userName, setUserName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
@@ -23,7 +26,7 @@ export const RegisterPage = () => {
   const [passwordError, setPasswordError] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
 
-  const handleNameChange = (e) => {
+  const handleNameChange = (e: ChangeEvent<HTMLInputElement>) => {
     const name = e.target.value;
     const filter = new Filter();
     setUserName(name);
@@ -38,7 +41,7 @@ export const RegisterPage = () => {
     }
   };
 
-  const handleEmailChange = (e) => {
+  const handleEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
     setEmail(e.target.value);
     if (!/\S+@\S+\.\S+/.test(e.target.value)) {
       setEmailError('Please enter a valid email');
@@ -47,7 +50,7 @@ export const RegisterPage = () => {
     }
   };
 
-  const handlePasswordChange = (e) => {
+  const handlePasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
     setPassword(e.target.value);
     if (!/(?=.*\d)(?=.*[a-zа-я])(?=.*[A-ZА-Я]).{6,}/.test(e.target.value)) {
       setPasswordError('Please enter a strong password');
@@ -60,7 +63,7 @@ export const RegisterPage = () => {
     setShowPassword(!showPassword);
   };
 
-  const fieldsValidation = (e) => {
+  const fieldsValidation: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault();
     if (!userNameError && !emailError && !passwordError) {
       handleSubmit();
@@ -79,13 +82,15 @@ export const RegisterPage = () => {
 
   const handleSubmit = () => {
     try {
-      const data = new FormData();
+      const data: FormData = new FormData();
       data.append('userName', userName);
       data.append('email', email);
       data.append('password', password);
-      data.append('image', image);
-      dispatch(registerUser(data));
+      if (image) {
+        data.append('image', image);
+      }
 
+      dispatch(registerUser(data));
     } catch (error) {
       console.log(error);
     }
@@ -109,11 +114,11 @@ export const RegisterPage = () => {
           <div className="form-page__item">
             <div className="form-page__image">
               <img
-                src={image ? URL.createObjectURL(image) : 'assets/noavatar.png'}
+                src={image ? URL.createObjectURL(image) : noAvatarPng}
                 alt="ImagePost"
               />
               <label className="form-page__add-img ">
-                <input onChange={(e) => setImage(e.target.files[0])} type="file" hidden />
+                <input onChange={(e) => setImage(e.target.files?.[0] || null)} type="file" hidden />
               </label>
             </div>
           </div>

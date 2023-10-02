@@ -1,7 +1,11 @@
-import React from 'react';
+import React, { ReactNode } from 'react';
 import { Header } from './Header';
 
-export const Layout = ({ children }) => {
+
+interface LayoutProps {
+  children: ReactNode;
+}
+export const Layout: React.FC<LayoutProps> = ({ children }) => {
   return (
     <React.Fragment>
       <div className="wrapper">
