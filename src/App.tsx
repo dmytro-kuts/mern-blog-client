@@ -28,17 +28,17 @@ function App() {
   return (
     <Layout>
       <Routes>
-        <Route path="/" element={<MainPage />} />
-        <Route path="register" element={<RegisterPage />} />
-        <Route path="login" element={<LoginPage />} />
-        <Route path="posts" element={<PostsPage />} />
-        <Route path="add" element={<AddPostPage />} />
-        <Route path=":id" element={<PostPage />} />
-        <Route path=":id/edit" element={<EditPostPage />} />
-        <Route path="*" element={<NotFound />} />
+        <Route path='/' element={<MainPage />} />
+        <Route path='register' element={<RegisterPage />} />
+        <Route path='login' element={<LoginPage />} />
+        <Route path='posts' element={<PostsPage />} />
+        <Route path='add' element={<AddPostPage />} />
+        <Route path=':id' element={<PostPage />} />
+        <Route path=':id/edit' element={<EditPostPage />} />
+        <Route path='*' element={<NotFound />} />
       </Routes>
 
-      <ToastContainer position="bottom-right" theme="dark" autoClose={2000} />
+      <ToastContainer position='bottom-right' theme='dark' autoClose={2000} />
     </Layout>
   );
 }

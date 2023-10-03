@@ -56,13 +56,16 @@ export const EditPostPage = () => {
   }, [fetchPost]);
 
   return (
-    <div className="page__add-post add-post">
-      <div className="add-post__container">
-        <form className="add-post__form form-add-post" onSubmit={(e) => e.preventDefault()}>
-          <label className="form-add-post__label button">
+    <div className='page__add-post add-post'>
+      <div className='add-post__container'>
+        <form
+          className='add-post__form form-add-post'
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <label className='form-add-post__label button'>
             Add image
             <input
-              type="file"
+              type='file'
               hidden
               onChange={(e) => {
                 if (e.target.files) {
@@ -72,39 +75,41 @@ export const EditPostPage = () => {
               }}
             />
           </label>
-          <div className="form-add-post__image">
-            {oldImage && <img src={`${API_URL}/${oldImage}`} alt="ImagePost" />}
-            {newImage && <img src={URL.createObjectURL(newImage)} alt="ImagePost" />}
+          <div className='form-add-post__image'>
+            {oldImage && <img src={`${API_URL}/${oldImage}`} alt='ImagePost' />}
+            {newImage && (
+              <img src={URL.createObjectURL(newImage)} alt='ImagePost' />
+            )}
           </div>
 
-          <label className="form-add-post__label">
+          <label className='form-add-post__label'>
             Title post:
             <input
-              type="text"
+              type='text'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="form-add-post__input"
+              className='form-add-post__input'
             />
           </label>
 
-          <label className="form-add-post__label">
+          <label className='form-add-post__label'>
             Text post:
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              className="form-add-post__input form-add-post__input_text"
+              className='form-add-post__input form-add-post__input_text'
             />
           </label>
 
-          <div className="form-add-post__actions">
+          <div className='form-add-post__actions'>
             <button
               onClick={handlerSubmit}
-              type="submit"
-              className="form-add-post__button button button_green"
+              type='submit'
+              className='form-add-post__button button button_green'
             >
               Update post
             </button>
-            <Link to="/" className="form-add-post__button button button_red">
+            <Link to='/' className='form-add-post__button button button_red'>
               Out
             </Link>
           </div>

@@ -43,11 +43,15 @@ export const AddPostPage = () => {
       }
       // Check that the title and text fields have at least 5 characters
       if (title.length < 5 || title.length > 30) {
-        toast.error('The title must be at least 5 and no more than 30 characters');
+        toast.error(
+          'The title must be at least 5 and no more than 30 characters',
+        );
         return;
       }
       if (text.length < 100 || text.length > 3000) {
-        toast.error('The text must be at least 100 and no more than 600 characters');
+        toast.error(
+          'The text must be at least 100 and no more than 600 characters',
+        );
         return;
       }
 
@@ -65,45 +69,48 @@ export const AddPostPage = () => {
   };
 
   return (
-    <div className="page__add-post add-post">
-      <div className="add-post__container">
-        <form className="add-post__form form-add-post" onSubmit={(e) => e.preventDefault()}>
-          <label className="form-add-post__label button">
+    <div className='page__add-post add-post'>
+      <div className='add-post__container'>
+        <form
+          className='add-post__form form-add-post'
+          onSubmit={(e) => e.preventDefault()}
+        >
+          <label className='form-add-post__label button'>
             Add image
-            <input onChange={handleImageChange} type="file" hidden />
+            <input onChange={handleImageChange} type='file' hidden />
           </label>
-          <div className="form-add-post__image">
-            {image && <img src={URL.createObjectURL(image)} alt="ImagePost" />}
+          <div className='form-add-post__image'>
+            {image && <img src={URL.createObjectURL(image)} alt='ImagePost' />}
           </div>
 
-          <label className="form-add-post__label">
+          <label className='form-add-post__label'>
             Title post:
             <input
-              type="text"
+              type='text'
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              className="form-add-post__input"
+              className='form-add-post__input'
             />
           </label>
 
-          <label className="form-add-post__label">
+          <label className='form-add-post__label'>
             Text post:
             <textarea
               value={text}
               onChange={(e) => setText(e.target.value)}
-              className="form-add-post__input form-add-post__input_text"
+              className='form-add-post__input form-add-post__input_text'
             />
           </label>
 
-          <div className="form-add-post__actions">
+          <div className='form-add-post__actions'>
             <button
               onClick={handleSubmit}
-              type="submit"
-              className="form-add-post__button button button_green"
+              type='submit'
+              className='form-add-post__button button button_green'
             >
               Add post
             </button>
-            <Link to="/" className="form-add-post__button button button_red">
+            <Link to='/' className='form-add-post__button button button_red'>
               Out
             </Link>
           </div>

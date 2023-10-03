@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { checkIsAuth, logout } from '../redux/slices/auth/authSlice';
 import { RootState, useAppDispatch } from '../redux/store';
-import  noAvatarPng  from '../assets/noavatar.png';
+import noAvatarPng from '../assets/noavatar.png';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -35,35 +35,47 @@ export const Header = () => {
   };
 
   return (
-    <header className="header">
+    <header className='header'>
       <div className={`header__container ${isMenuOpen ? 'menu-open' : ''}`}>
-        <div className="header__logo">
-          <div className="header__avatar">
+        <div className='header__logo'>
+          <div className='header__avatar'>
             {user?.avatarUrl ? (
-              <img src={`${API_URL}/${user.avatarUrl}`} alt="ImagePost" />
+              <img src={`${API_URL}/${user.avatarUrl}`} alt='ImagePost' />
             ) : (
-              <img src={noAvatarPng } alt="ImagePost" />
+              <img src={noAvatarPng} alt='ImagePost' />
             )}
           </div>
           <h3>{user?.userName}</h3>
         </div>
 
         {isAuth && (
-          <div className="header__menu menu">
-            <nav className="menu__body">
-              <ul className="menu__list">
-                <li className="menu__item">
-                  <NavLink to="/" className="menu__link" onClick={handleMenuLinkClick}>
+          <div className='header__menu menu'>
+            <nav className='menu__body'>
+              <ul className='menu__list'>
+                <li className='menu__item'>
+                  <NavLink
+                    to='/'
+                    className='menu__link'
+                    onClick={handleMenuLinkClick}
+                  >
                     All posts
                   </NavLink>
                 </li>
-                <li className="menu__item">
-                  <NavLink to="/posts" className="menu__link" onClick={handleMenuLinkClick}>
+                <li className='menu__item'>
+                  <NavLink
+                    to='/posts'
+                    className='menu__link'
+                    onClick={handleMenuLinkClick}
+                  >
                     My posts
                   </NavLink>
                 </li>
-                <li className="menu__item">
-                  <NavLink to="/add" className="menu__link" onClick={handleMenuLinkClick}>
+                <li className='menu__item'>
+                  <NavLink
+                    to='/add'
+                    className='menu__link'
+                    onClick={handleMenuLinkClick}
+                  >
                     Add post
                   </NavLink>
                 </li>
@@ -72,26 +84,34 @@ export const Header = () => {
           </div>
         )}
 
-        <div className="header__actions">
+        <div className='header__actions'>
           {isAuth ? (
-            <button onClick={logoutHandler} className="header__button button">
+            <button onClick={logoutHandler} className='header__button button'>
               Log Out
             </button>
           ) : (
             <Link
               to={
-                location.pathname === '/login' || location.pathname === '/register' ? '/' : '/login'
+                location.pathname === '/login' ||
+                location.pathname === '/register'
+                  ? '/'
+                  : '/login'
               }
-              className="header__button button"
+              className='header__button button'
             >
-              {location.pathname === '/login' || location.pathname === '/register'
+              {location.pathname === '/login' ||
+              location.pathname === '/register'
                 ? 'Back'
                 : 'Log In'}
             </Link>
           )}
         </div>
         {isAuth && (
-          <button type="button" className="menu__icon icon-menu" onClick={handleMenuToggle}>
+          <button
+            type='button'
+            className='menu__icon icon-menu'
+            onClick={handleMenuToggle}
+          >
             <span></span>
           </button>
         )}

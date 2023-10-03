@@ -19,11 +19,9 @@ export const PostsPage = () => {
   }, []);
 
   return (
-    <div className="page__posts posts">
-      <div className="posts__container">
-        {posts?.map((post) => (
-          <PostItem key={post._id} post={post} />
-        ))}
+    <div className='page__posts posts'>
+      <div className='posts__container'>
+        {posts?.map((post) => <PostItem key={post._id} post={post} />)}
       </div>
     </div>
   );

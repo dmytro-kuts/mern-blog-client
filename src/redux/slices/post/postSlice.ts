@@ -49,15 +49,18 @@ const initialState: PostState = {
 };
 
 //========================================================================================================================================================
-export const createPost = createAsyncThunk('post/createPost', async (params: FormData) => {
-  try {
-    const { data } = await axios.post('/posts', params);
+export const createPost = createAsyncThunk(
+  'post/createPost',
+  async (params: FormData) => {
+    try {
+      const { data } = await axios.post('/posts', params);
 
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 //========================================================================================================================================================
 
 export const getOnePost = createAsyncThunk(
@@ -84,29 +87,35 @@ export const getAllPosts = createAsyncThunk('posts/getAllPosts', async () => {
 });
 //========================================================================================================================================================
 
-export const deletePost = createAsyncThunk('post/deletePost', async (id: string) => {
-  try {
-    const { data } = await axios.delete(`/posts/${id}`, {
-      data: { id },
-    });
+export const deletePost = createAsyncThunk(
+  'post/deletePost',
+  async (id: string) => {
+    try {
+      const { data } = await axios.delete(`/posts/${id}`, {
+        data: { id },
+      });
 
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 //========================================================================================================================================================
 
-export const updatePost = createAsyncThunk('post/updatePost', async (dataUpdate: FormData) => {
-  try {
-    const id = dataUpdate.get('id') as string;
-    const { data } = await axios.put(`/posts/${id}`, dataUpdate);
+export const updatePost = createAsyncThunk(
+  'post/updatePost',
+  async (dataUpdate: FormData) => {
+    try {
+      const id = dataUpdate.get('id') as string;
+      const { data } = await axios.put(`/posts/${id}`, dataUpdate);
 
-    return data;
-  } catch (error) {
-    console.log(error);
-  }
-});
+      return data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+);
 //========================================================================================================================================================
 export const postSlice = createSlice({
   name: 'post',
@@ -169,7 +178,9 @@ export const postSlice = createSlice({
     });
     builder.addCase(deletePost.fulfilled, (state, action) => {
       state.isLoading = false;
-      state.posts = state.posts.filter((post) => post._id !== action.payload._id);
+      state.posts = state.posts.filter(
+        (post) => post._id !== action.payload._id,
+      );
       state.status = action.payload.message;
     });
     builder.addCase(deletePost.rejected, (state, action) => {
@@ -184,7 +195,9 @@ export const postSlice = createSlice({
     });
     builder.addCase(updatePost.fulfilled, (state, action) => {
       state.isLoading = false;
-      const index = state.posts.findIndex((post) => post._id === action.payload._id);
+      const index = state.posts.findIndex(
+        (post) => post._id === action.payload._id,
+      );
       if (index !== -1) {
         state.posts[index] = action.payload;
       }

@@ -16,7 +16,10 @@ import badWords from 'bad-words';
 import axios from '../utils/axios';
 import { deletePost, getOnePost } from '../redux/slices/post/postSlice';
 import { checkIsAuth } from '../redux/slices/auth/authSlice';
-import { createComment, getPostComments } from '../redux/slices/comment/commentSlice';
+import {
+  createComment,
+  getPostComments,
+} from '../redux/slices/comment/commentSlice';
 
 import { CommentItem } from '../components/CommentItem';
 import { RootState, useAppDispatch } from '../redux/store';
@@ -36,7 +39,9 @@ export const PostPage = () => {
   const { post } = useSelector((state: RootState) => state.post);
 
   const [comment, setComment] = React.useState<string>('');
-  const [likes, setLikes] = React.useState<number | undefined>(post?.likes?.length);
+  const [likes, setLikes] = React.useState<number | undefined>(
+    post?.likes?.length,
+  );
 
   const deletePostHandler = () => {
     try {
@@ -123,59 +128,75 @@ export const PostPage = () => {
   }, [params, dispatch, navigate, post?.likes?.length]);
 
   return (
-    <section className="page__post post-page">
-      <div className="post-page__container">
-        <Link to={'/'} className="post-page__button button">
+    <section className='page__post post-page'>
+      <div className='post-page__container'>
+        <Link to={'/'} className='post-page__button button'>
           Back
         </Link>
 
-        <div className="post-page__body body-post">
-          <article className="body-post__item">
-            <div className={post?.imgUrl ? 'body-post__image' : 'body-post__image none'}>
-              {post?.imgUrl && <img src={`${API_URL}/${post?.imgUrl}`} alt="ImagePost" />}
+        <div className='post-page__body body-post'>
+          <article className='body-post__item'>
+            <div
+              className={
+                post?.imgUrl ? 'body-post__image' : 'body-post__image none'
+              }
+            >
+              {post?.imgUrl && (
+                <img src={`${API_URL}/${post?.imgUrl}`} alt='ImagePost' />
+              )}
             </div>
-            <div className="body-post__content">
-              <div className="body-post__info">
-                <div className="body-post__author">
+            <div className='body-post__content'>
+              <div className='body-post__info'>
+                <div className='body-post__author'>
                   {post?.userAvatar ? (
-                    <img src={`${API_URL}/${post.userAvatar}`} alt="ImagePost" />
+                    <img
+                      src={`${API_URL}/${post.userAvatar}`}
+                      alt='ImagePost'
+                    />
                   ) : (
-                    <img src={noAvatarPng} alt="Avatar" />
+                    <img src={noAvatarPng} alt='Avatar' />
                   )}
 
                   <h3>{post?.userName}</h3>
                 </div>
-                <div className="body-post__date">
+                <div className='body-post__date'>
                   {/* <Moment date={post?.createdAt} format="D MMM YYYY" /> */}
                 </div>
               </div>
-              <h2 className="body-post__title">{post?.title}</h2>
-              <div className="body-post__text">
-                {post?.text?.split('\n').map((paragraph, index) => (
-                  <p key={index}>{paragraph}</p>
-                ))}
+              <h2 className='body-post__title'>{post?.title}</h2>
+              <div className='body-post__text'>
+                {post?.text
+                  ?.split('\n')
+                  .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
               </div>
-              <div className="body-post__actions actions-post ">
-                <div className="actions-post__row">
-                  <div className="actions-post__view">
+              <div className='body-post__actions actions-post '>
+                <div className='actions-post__row'>
+                  <div className='actions-post__view'>
                     <AiFillEye /> <span>{post?.views}</span>
                   </div>
-                  <div className="actions-post__comments">
-                    <AiOutlineMessage /> <span>{post?.comments?.length || 0}</span>
+                  <div className='actions-post__comments'>
+                    <AiOutlineMessage />{' '}
+                    <span>{post?.comments?.length || 0}</span>
                   </div>
-                  <button onClick={likePostHandler} className="actions-post__popular">
+                  <button
+                    onClick={likePostHandler}
+                    className='actions-post__popular'
+                  >
                     <AiOutlineLike />
                     <span>{likes}</span>
                   </button>
                 </div>
                 {user?._id === post?.author && (
-                  <div className="actions-post__row">
-                    <button className="actions-post__edit">
+                  <div className='actions-post__row'>
+                    <button className='actions-post__edit'>
                       <Link to={`/${params.id}/edit`}>
                         <AiTwotoneEdit />
                       </Link>
                     </button>
-                    <button onClick={deletePostHandler} className="actions-post__delete">
+                    <button
+                      onClick={deletePostHandler}
+                      className='actions-post__delete'
+                    >
                       <AiFillDelete />
                     </button>
                   </div>
@@ -184,25 +205,34 @@ export const PostPage = () => {
             </div>
           </article>
 
-          <aside className="body-post__aside aside-body">
-            <h3 className="aside-body__title">Comments:</h3>
+          <aside className='body-post__aside aside-body'>
+            <h3 className='aside-body__title'>Comments:</h3>
 
             {isAuth && (
-              <form className="aside-body__form" onSubmit={(e) => e.preventDefault()}>
+              <form
+                className='aside-body__form'
+                onSubmit={(e) => e.preventDefault()}
+              >
                 <input
-                  type="text"
+                  type='text'
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
-                  placeholder="New comment"
+                  placeholder='New comment'
                 />
-                <button onClick={handleSubmit} className="aside-body__button button" type="submit">
+                <button
+                  onClick={handleSubmit}
+                  className='aside-body__button button'
+                  type='submit'
+                >
                   Send
                 </button>
               </form>
             )}
-            <ul className="aside-body__comments comments">
+            <ul className='aside-body__comments comments'>
               {comments
-                ?.map((cmt) => <CommentItem key={cmt._id} cmt={cmt} user={user} />)
+                ?.map((cmt) => (
+                  <CommentItem key={cmt._id} cmt={cmt} user={user} />
+                ))
                 .reverse()}
             </ul>
           </aside>

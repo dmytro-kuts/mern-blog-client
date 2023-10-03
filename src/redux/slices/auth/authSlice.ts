@@ -19,7 +19,6 @@ export interface AuthState {
   status: string | null;
 }
 
-
 export interface LoginParams {
   email: string;
   password: string;

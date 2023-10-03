@@ -1,4 +1,3 @@
-
 export const NotFoundBlock = () => {
   return (
     <h1 className=''>

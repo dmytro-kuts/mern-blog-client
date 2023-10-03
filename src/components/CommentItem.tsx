@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 
 import { useAppDispatch } from '../redux/store';
 
-import  noAvatarPng  from '../assets/noavatar.png';
+import noAvatarPng from '../assets/noavatar.png';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -37,28 +37,28 @@ export const CommentItem: React.FC<CommentItemProps> = ({ cmt, user }) => {
   };
 
   return (
-    <li className="comments__item">
-      <div className="comments__header">
-        <div className="comments__author">
+    <li className='comments__item'>
+      <div className='comments__header'>
+        <div className='comments__author'>
           {cmt?.userAvatar ? (
-            <img src={`${API_URL}/${cmt.userAvatar}`} alt="ImagePost" />
+            <img src={`${API_URL}/${cmt.userAvatar}`} alt='ImagePost' />
           ) : (
-            <img src={noAvatarPng } alt="Avatar" />
+            <img src={noAvatarPng} alt='Avatar' />
           )}
           <h3>{cmt.userName}</h3>
         </div>
-        <div className="comments__information">
-          <div className="comments__date">
+        <div className='comments__information'>
+          <div className='comments__date'>
             {/* <Moment date={cmt.createdAt} format="HH:mm DD-MM-YYYY" /> */}
           </div>
           {user?.userName === cmt.userName && (
-            <button onClick={deleteCommentHandler} className="comments__delete">
+            <button onClick={deleteCommentHandler} className='comments__delete'>
               <AiFillDelete />
             </button>
           )}
         </div>
       </div>
-      <div className="comments__text">
+      <div className='comments__text'>
         <p>{cmt.comment}</p>
       </div>
     </li>
