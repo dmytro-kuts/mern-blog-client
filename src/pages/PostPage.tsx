@@ -25,6 +25,7 @@ import { CommentItem } from '../components/CommentItem';
 import { RootState, useAppDispatch } from '../redux/store';
 
 import noAvatarPng from '../assets/noavatar.png';
+import Preloader from '../components/Preloader';
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -36,7 +37,7 @@ export const PostPage = () => {
 
   const { user } = useSelector((state: RootState) => state.auth);
   const { comments } = useSelector((state: RootState) => state.comment);
-  const { post } = useSelector((state: RootState) => state.post);
+  const { post, isLoading } = useSelector((state: RootState) => state.post);
 
   const [comment, setComment] = React.useState<string>('');
   const [likes, setLikes] = React.useState<number | undefined>(
@@ -135,76 +136,79 @@ export const PostPage = () => {
         </Link>
 
         <div className='post-page__body body-post'>
-          <article className='body-post__item'>
-            <div
-              className={
-                post?.imgUrl ? 'body-post__image' : 'body-post__image none'
-              }
-            >
-              {post?.imgUrl && (
-                <img src={`${API_URL}/${post?.imgUrl}`} alt='ImagePost' />
-              )}
-            </div>
-            <div className='body-post__content'>
-              <div className='body-post__info'>
-                <div className='body-post__author'>
-                  {post?.userAvatar ? (
-                    <img
-                      src={`${API_URL}/${post.userAvatar}`}
-                      alt='ImagePost'
-                    />
-                  ) : (
-                    <img src={noAvatarPng} alt='Avatar' />
-                  )}
-
-                  <h3>{post?.userName}</h3>
-                </div>
-                <div className='body-post__date'>
-                  {/* <Moment date={post?.createdAt} format="D MMM YYYY" /> */}
-                </div>
-              </div>
-              <h2 className='body-post__title'>{post?.title}</h2>
-              <div className='body-post__text'>
-                {post?.text
-                  ?.split('\n')
-                  .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
-              </div>
-              <div className='body-post__actions actions-post '>
-                <div className='actions-post__row'>
-                  <div className='actions-post__view'>
-                    <AiFillEye /> <span>{post?.views}</span>
-                  </div>
-                  <div className='actions-post__comments'>
-                    <AiOutlineMessage />{' '}
-                    <span>{post?.comments?.length || 0}</span>
-                  </div>
-                  <button
-                    onClick={likePostHandler}
-                    className='actions-post__popular'
-                  >
-                    <AiOutlineLike />
-                    <span>{likes}</span>
-                  </button>
-                </div>
-                {user?._id === post?.author && (
-                  <div className='actions-post__row'>
-                    <button className='actions-post__edit'>
-                      <Link to={`/${params.id}/edit`}>
-                        <AiTwotoneEdit />
-                      </Link>
-                    </button>
-                    <button
-                      onClick={deletePostHandler}
-                      className='actions-post__delete'
-                    >
-                      <AiFillDelete />
-                    </button>
-                  </div>
+          {isLoading ? (
+            <Preloader />
+          ) : (
+            <article className='body-post__item'>
+              <div
+                className={
+                  post?.imgUrl ? 'body-post__image' : 'body-post__image none'
+                }
+              >
+                {post?.imgUrl && (
+                  <img src={`${API_URL}/${post?.imgUrl}`} alt='ImagePost' />
                 )}
               </div>
-            </div>
-          </article>
+              <div className='body-post__content'>
+                <div className='body-post__info'>
+                  <div className='body-post__author'>
+                    {post?.userAvatar ? (
+                      <img
+                        src={`${API_URL}/${post.userAvatar}`}
+                        alt='ImagePost'
+                      />
+                    ) : (
+                      <img src={noAvatarPng} alt='Avatar' />
+                    )}
 
+                    <h3>{post?.userName}</h3>
+                  </div>
+                  <div className='body-post__date'>
+                    {/* <Moment date={post?.createdAt} format="D MMM YYYY" /> */}
+                  </div>
+                </div>
+                <h2 className='body-post__title'>{post?.title}</h2>
+                <div className='body-post__text'>
+                  {post?.text
+                    ?.split('\n')
+                    .map((paragraph, index) => <p key={index}>{paragraph}</p>)}
+                </div>
+                <div className='body-post__actions actions-post '>
+                  <div className='actions-post__row'>
+                    <div className='actions-post__view'>
+                      <AiFillEye /> <span>{post?.views}</span>
+                    </div>
+                    <div className='actions-post__comments'>
+                      <AiOutlineMessage />{' '}
+                      <span>{post?.comments?.length || 0}</span>
+                    </div>
+                    <button
+                      onClick={likePostHandler}
+                      className='actions-post__popular'
+                    >
+                      <AiOutlineLike />
+                      <span>{likes}</span>
+                    </button>
+                  </div>
+                  {user?._id === post?.author && (
+                    <div className='actions-post__row'>
+                      <button className='actions-post__edit'>
+                        <Link to={`/${params.id}/edit`}>
+                          <AiTwotoneEdit />
+                        </Link>
+                      </button>
+                      <button
+                        onClick={deletePostHandler}
+                        className='actions-post__delete'
+                      >
+                        <AiFillDelete />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              </div>
+            </article>
+          )}
           <aside className='body-post__aside aside-body'>
             <h3 className='aside-body__title'>Comments:</h3>
 
@@ -229,11 +233,15 @@ export const PostPage = () => {
               </form>
             )}
             <ul className='aside-body__comments comments'>
-              {comments
-                ?.map((cmt) => (
-                  <CommentItem key={cmt._id} cmt={cmt} user={user} />
-                ))
-                .reverse()}
+              {isLoading ? (
+                <Preloader />
+              ) : (
+                comments
+                  ?.map((cmt) => (
+                    <CommentItem key={cmt._id} cmt={cmt} user={user} />
+                  ))
+                  .reverse()
+              )}
             </ul>
           </aside>
         </div>
