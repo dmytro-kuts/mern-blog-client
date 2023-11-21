@@ -6,14 +6,16 @@
   z-index: 100;
   background: -webkit-linear-gradient(to right, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
   background: linear-gradient(to right, rgb(43, 39, 74) 0%, rgb(0, 0, 0) 100%);
+
   // .header__container
   &__container {
-    @include adaptiveValue('padding-top', 20, 10);
-    @include adaptiveValue('padding-bottom', 20, 10);
+    padding-top: rem(10);
+    padding-bottom: rem(10);
     display: flex;
     align-items: center;
     justify-content: space-between;
     @include adaptiveValue('gap', 40, 20);
+    @include adaptiveValue('min-height', 60, 40, 0, $containerWidth, 768);
   }
   // .header__logo
   &__logo {
