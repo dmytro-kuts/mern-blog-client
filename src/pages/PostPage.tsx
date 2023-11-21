@@ -1,5 +1,4 @@
 import React from 'react';
-// import Moment from 'react-moment';
 import {
   AiFillDelete,
   AiFillEye,
@@ -12,6 +11,8 @@ import { useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
 import badWords from 'bad-words';
+
+import { useDateFormat } from '../hooks/useDateFormat';
 
 import axios from '../utils/axios';
 import { deletePost, getOnePost } from '../redux/slices/post/postSlice';
@@ -43,6 +44,10 @@ export const PostPage = () => {
   const [likes, setLikes] = React.useState<number | undefined>(
     post?.likes?.length,
   );
+
+  const formattedDate = useDateFormat(post?.createdAt);
+
+  const isAuthor = user?._id === post?.author;
 
   const deletePostHandler = () => {
     try {
@@ -146,7 +151,10 @@ export const PostPage = () => {
                 }
               >
                 {post?.imgUrl && (
-                  <img src={`${API_URL}/${post?.imgUrl}`} alt='ImagePost' />
+                  <img
+                    src={`${API_URL}/${post?.imgUrl}`}
+                    alt={`Cover of post ${post.title}`}
+                  />
                 )}
               </div>
               <div className='body-post__content'>
@@ -155,7 +163,7 @@ export const PostPage = () => {
                     {post?.userAvatar ? (
                       <img
                         src={`${API_URL}/${post.userAvatar}`}
-                        alt='ImagePost'
+                        alt={`Avatar of ${post.userName}`}
                       />
                     ) : (
                       <img src={noAvatarPng} alt='Avatar' />
@@ -163,9 +171,7 @@ export const PostPage = () => {
 
                     <h3>{post?.userName}</h3>
                   </div>
-                  <div className='body-post__date'>
-                    {/* <Moment date={post?.createdAt} format="D MMM YYYY" /> */}
-                  </div>
+                  <div className='body-post__date'>{formattedDate}</div>
                 </div>
                 <h2 className='body-post__title'>{post?.title}</h2>
                 <div className='body-post__text'>
@@ -212,7 +218,7 @@ export const PostPage = () => {
           <aside className='body-post__aside aside-body'>
             <h3 className='aside-body__title'>Comments:</h3>
 
-            {isAuth && (
+            {isAuth && !isAuthor && (
               <form
                 className='aside-body__form'
                 onSubmit={(e) => e.preventDefault()}

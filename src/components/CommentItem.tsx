@@ -1,7 +1,8 @@
-// import Moment from 'react-moment';
 import { deleteComment } from '../redux/slices/comment/commentSlice';
 import { AiFillDelete } from 'react-icons/ai';
 import { toast } from 'react-toastify';
+
+import { useDateFormat } from '../hooks/useDateFormat';
 
 import { useAppDispatch } from '../redux/store';
 
@@ -25,6 +26,8 @@ interface CommentItemProps {
 export const CommentItem: React.FC<CommentItemProps> = ({ cmt, user }) => {
   const dispatch = useAppDispatch();
 
+  const formattedDate = useDateFormat(cmt?.createdAt);
+
   const deleteCommentHandler = () => {
     try {
       const commentId = cmt._id;
@@ -41,16 +44,17 @@ export const CommentItem: React.FC<CommentItemProps> = ({ cmt, user }) => {
       <div className='comments__header'>
         <div className='comments__author'>
           {cmt?.userAvatar ? (
-            <img src={`${API_URL}/${cmt.userAvatar}`} alt='ImagePost' />
+            <img
+              src={`${API_URL}/${cmt.userAvatar}`}
+              alt={`Avatar of ${cmt.userName}`}
+            />
           ) : (
             <img src={noAvatarPng} alt='Avatar' />
           )}
           <h3>{cmt.userName}</h3>
         </div>
         <div className='comments__information'>
-          <div className='comments__date'>
-            {/* <Moment date={cmt.createdAt} format="HH:mm DD-MM-YYYY" /> */}
-          </div>
+          <div className='comments__date'>{formattedDate}</div>
           {user?.userName === cmt.userName && (
             <button onClick={deleteCommentHandler} className='comments__delete'>
               <AiFillDelete />
